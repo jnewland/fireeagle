@@ -73,7 +73,6 @@ context "The FireEagle::User class" do
   specify "should be able to create a new user with a token" do
     @newuser = FireEagle::User.new(@f, 1234)
     @newuser.token.should.be.equal "1234"
-  
   end
   
   
@@ -86,6 +85,9 @@ context "The FireEagle::User class" do
   
   
   xspecify "should be able to set a location" do
+  end
+  
+  xspecify "should be able to query a location" do
   end
   
 end

@@ -55,8 +55,43 @@ context "The FireEagle::Location class" do
     RESPONSE
   end
   
-  xspecify "" do
-    # @location = FireEagle::Location.new(location_details)
+  specify "Requires all or none of :lat, :long" do
+    lambda { FireEagle::Location.new(:lat => 1) }.should.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:lat => 1, :long => 2) }.should.not.raise FireEagle::ArgumentError
   end
-
+  
+  specify "Requires all or none of :mnc, :mcc, :lac, :cellid" do
+    lambda { FireEagle::Location.new(:mcc => 123, :lac => "whatever", :cellid => true) }.should.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:mcc => 123, :mnc => 123123, :lac => "whatever", :cellid => true) }.should.not.raise FireEagle::ArgumentError
+  end
+  
+  specify "Requires all or none of :street1, :street2" do
+    lambda { FireEagle::Location.new(:street1 => "easy street") }.should.raise FireEagle::ArgumentError
+  end
+  
+  specify "Requires :postal or :city with :street1 and :street2" do
+    lambda { FireEagle::Location.new(:street1 => "easy street", :street2 => "lazy lane") }.should.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:street1 => "easy street", :street2 => "lazy lane", :city => "anytown", :country => "US") }.should.not.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:street1 => "easy street", :street2 => "lazy lane", :postal => 12345) }.should.not.raise FireEagle::ArgumentError
+  end
+  
+  specify "Requires :city or :postal with :addr" do
+    lambda { FireEagle::Location.new(:addr => "1 easy street") }.should.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:addr => "1 easy street", :city => "anytown", :country => "US") }.should.not.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:addr => "1 easy street", :postal => 12345) }.should.not.raise FireEagle::ArgumentError
+  end
+  
+  specify "Requires :state, :country, or :postal with :city" do
+    lambda { FireEagle::Location.new(:city => "armuchee") }.should.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:city => "armuchee", :state => "GA") }.should.not.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:city => "armuchee", :postal => 12345) }.should.not.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:city => "armuchee", :country => "US") }.should.not.raise FireEagle::ArgumentError
+  end
+  
+  specify "Requires :country with :postal if not in US" do
+    lambda { FireEagle::Location.new(:postal => "a49", :country => "Armenia") }.should.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:postal => 30605, :country => "US") }.should.not.raise FireEagle::ArgumentError
+    lambda { FireEagle::Location.new(:postal => 30605) }.should.not.raise FireEagle::ArgumentError
+  end
+    
 end

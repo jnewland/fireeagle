@@ -2,7 +2,7 @@ class FireEagle
 
   API_DOMAIN = "fireeagle.research.yahoo.com"
   API_PATH = "/api/"
-  DEBUG = false
+  DEBUG = true
   
   attr_reader :token, :secret
   
@@ -32,7 +32,7 @@ private
 
     #sort and URL encode the params
     normalized_params = {}
-    params.each_pair { |name, value| normalized_params[name.to_s] = CGI::escape(value.to_s) }
+    params.each_pair { |name, value| normalized_params[name.to_s] = value.to_s }
 
     #build the string to sign
     sig = "#{@fireeagle.secret}"
@@ -42,7 +42,7 @@ private
     normalized_params['sig'] = Digest::SHA1.hexdigest(sig)
 
     #create and return the request string
-    request_string = "?" + normalized_params.to_a.collect { |name, value| "#{name}=#{value}" }.join('&')
+    request_string = "?" + normalized_params.sort.collect { |name, value| "#{name}=#{CGI::escape(value)}" }.join('&')
   end
 
   # request method which is used by all public methods
@@ -50,7 +50,7 @@ private
     raise ArgumentError, "Action name required" if action.nil?
 
     #reject crap
-    params.reject { |key, value| value.nil? or value.empty?}
+    params.reject { |key, value| value.nil? or (value.is_a?(String) and value.empty?)}
     #merge timestamp
     params.merge!( { :timestamp => Time.now.to_i } )
 

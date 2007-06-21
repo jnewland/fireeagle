@@ -38,14 +38,22 @@ class FireEagle::Location
               :source, :addr, :mcn, :mcc, :lac, :cellid, :loc, :name, :woeid, :plazesid, 
               :upvenueid, :street1, :street2
   
-  ATTRIBUTES.each { |attribute| attr_reader attribute }
+  attr_reader :details
   
   def initialize(options = {}, verify_attributes = true)
+    option = options.reject { |key, value| ATTRIBUTES.include?(key) }
+    
     if verify_attributes
-      options.reject! { |key, value| !ATTRIBUTES.include?(key) }
+      raise FireEagle::ArgumentError, "Requires all or none of :lat, :long" unless options.has_all_or_none_keys?(:lat, :long)
+      raise FireEagle::ArgumentError, "Requires all or none of :mnc, :mcc, :lac, :cellid" unless options.has_all_or_none_keys?(:mnc, :mcc, :lac, :cellid)
+      raise FireEagle::ArgumentError, "Requires all or none of :street1, :street2" unless options.has_all_or_none_keys?(:street1, :street2)
+      raise FireEagle::ArgumentError, "Requires :postal or :city with :street1 and :street2" if (options.has_key?(:street1) and options.has_key?(:street2)) and !(options.has_key?(:city) or options.has_key?(:postal))
+      raise FireEagle::ArgumentError, "Requires :city or :postal with :addr" if options.has_key?(:addr) and !(options.has_key?(:city) or options.has_key?(:postal))
+      raise FireEagle::ArgumentError, "Requires :state, :country, or :postal with :city" if options.has_key?(:city) and !(options.has_key?(:state) or options.has_key?(:country) or options.has_key?(:postal))
+      raise FireEagle::ArgumentError, "Requires :country with :postal if not in US" if (options.has_key?(:postal) and options.has_key?(:country)) and (options[:country] != "US")
     end
     
-    options.each_pair { |key, value| instance_variable_set("@#{key.to_s.gsub(/:/,'')}", value) }
+    @details = options
   end
   
   class << self
@@ -53,10 +61,11 @@ class FireEagle::Location
       #build the massive hash needed for a location
       options = { }
       doc = doc.at("/resultset")
-      options[:locale] = doc.at("locale").innerText
+      options[:locale] = doc.at("locale").innerText unless doc.at("locale").nil?
       # quick parse of the xml
+      puts doc if FireEagle::DEBUG
       doc.at("result").containers.each do |attribute| 
-        options[attribute.xpath.split("/")[-1].to_sym] = attribute.inner_text
+        options[attribute.xpath.split("/")[-1].to_sym] = attribute.inner_text unless attribute.nil?
       end
       #fixup types
       options[:updatetime] = Time.parse(options[:updatetime])
@@ -69,5 +78,15 @@ class FireEagle::Location
       FireEagle::Location.new(options, false)
     end
   end
+
+private
+  
+  def verify_attribute_combination(options, *args)
+    args.each do |a|
+      return false unless options.include?(a)
+    end
+    return true
+  end
+  
   
 end

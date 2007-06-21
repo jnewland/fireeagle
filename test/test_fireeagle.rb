@@ -22,9 +22,6 @@ context "The FireEagle class" do
     @f.application.class.should.equal FireEagle::Application
   end
   
-  xspecify "signs and encodes parameters sent to request" do
-  end
-  
   specify "is able to stub itself (learning experience here)" do
     FireEagle.stubs(:foo).returns("bar")
     FireEagle.foo.should.equal "bar"

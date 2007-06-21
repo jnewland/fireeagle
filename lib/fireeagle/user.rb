@@ -17,15 +17,18 @@ class FireEagle::User < FireEagle::APIBase
     request("queryLoc", :userid => self.token)
   end
   
-  def update_location(location)
+  def location=(location)
     raise ArgumentError, "FireEagle::Location required" unless location.is_a?(FireEagle::Location)
-    request("updateLoc", location)
+    returning(location) do
+      request("updateLoc", location.details.merge(:userid => self.token))
+    end
   end
   
 private
   
   def parse_response(doc)
-    raise FireEagleException, doc.at("/resultset/errormessage").innerText if doc.at("/resultset").nil?
+    raise FireEagleException, doc.at("/resultset/errormessage").innerText if doc.at("/resultset/error").innerText.to_i != 0
+    return if doc.at("/resultset/result").nil? 
     FireEagle::Location.new_from_xml(doc)
   end
   

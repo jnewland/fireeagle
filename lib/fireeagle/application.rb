@@ -5,10 +5,18 @@ class FireEagle::Application < FireEagle::APIBase
   #2. User token displayed onscreen (this is good for testing, but will likely be phased out or modified in the future)
   #3. User token is exchanged at a later time (good for mobile devices where a user may not want to enter their Yahoo! username/password)
   #   
-  def authorize_url(callback_url = "")
-    "http://#{FireEagle::API_DOMAIN}/authorize.php?appid=#{@fireeagle.token}&callback=#{CGI::escape(callback_url)}"
+  def authorize_url(callback_url = nil)
+    if callback_url.nil?
+      return "http://#{FireEagle::API_DOMAIN}/authorize.php?appid=#{@fireeagle.token}"
+    else
+      return "http://#{FireEagle::API_DOMAIN}/authorize.php?appid=#{@fireeagle.token}&callback=#{CGI::escape(callback_url)}"
+    end
   end
-
+  
+  # URL needed to obtain a token to pass to exchange_token
+  def token_url
+    "http://#{FireEagle::API_DOMAIN}/displayToken.php?appid=#{@fireeagle.token}"
+  end
   
   #Applications which do not maintain a user repository (for example, a lightweight mobile application) may not wish to use the callback mechanism described above. These applications still must send users to authorize.php, but do not expect an immediate response (though at the moment, the authorize page will display the user token for easy testing and debugging). After the user has authorized an application, the application can later retrieve the user token in exchange for a short code obtained by the user from the Fire Eagle site. The user would retrieve a short code from the FE site and enter the code into the application which would then use the exchangeToken.php to exchange the short code for a full user token.
   # 

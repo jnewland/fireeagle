@@ -7,7 +7,7 @@ FireEagle[http://fireeagle.research.yahoo.com/] (FE) is a system providing centr
 == Usage
 
  require 'fireeagle'
- f = FireEagle.new(:token => "foo", :secret => "bar")
+ f = FireEagle::Base.new(:token => "foo", :secret => "bar")
  user = FireEagle::User.new(f,"token")
  l = FireEagle::Location.new(:country => "Belize")
  user.location = l

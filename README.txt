@@ -14,7 +14,7 @@ FireEagle[http://fireeagle.research.yahoo.com/] (FE) is a system providing centr
  user.location
  =>  #<FireEagle::Location:0x15ba0d0 @details={:country=>"Belize"}>
 
- Rubyforge Project Page:: http://rubyforge.org/projects/fireeagle
- Author::    Jesse Newland (http://soylentfoo.jnewland.com) (jnewland@gmail.com[mailto:jnewland@gmail.com])
- Copyright:: Copyright (c) 2007 Jesse Newland
- License::   Distributes under the same terms as Ruby
+Rubyforge Project Page:: http://rubyforge.org/projects/fireeagle
+Author::    Jesse Newland (http://soylentfoo.jnewland.com) (jnewland@gmail.com[mailto:jnewland@gmail.com])
+Copyright:: Copyright (c) 2007 Jesse Newland
+License::   Distributes under the same terms as Ruby

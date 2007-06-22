@@ -3,14 +3,14 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 context "The FireEagle class" do
   
   setup do
-    @f = FireEagle.new(:token => "foo", :secret => "bar")
+    @f = FireEagle::Base.new(:token => "foo", :secret => "bar")
   end
   
   specify "should require a secret and a token" do
-     lambda { FireEagle.new }.should.raise(FireEagle::ArgumentError)
-     lambda { FireEagle.new(:token => "foo") }.should.raise(FireEagle::ArgumentError)
-     lambda { FireEagle.new(:secret => "bar") }.should.raise(FireEagle::ArgumentError)
-     lambda { FireEagle.new(:token => "foo", :secret => "bar") }.should.not.raise(FireEagle::ArgumentError) 
+     lambda { FireEagle::Base.new }.should.raise(FireEagle::ArgumentError)
+     lambda { FireEagle::Base.new(:token => "foo") }.should.raise(FireEagle::ArgumentError)
+     lambda { FireEagle::Base.new(:secret => "bar") }.should.raise(FireEagle::ArgumentError)
+     lambda { FireEagle::Base.new(:token => "foo", :secret => "bar") }.should.not.raise(FireEagle::ArgumentError) 
   end
   
   specify "should have token and secret readers" do
@@ -23,8 +23,8 @@ context "The FireEagle class" do
   end
   
   specify "is able to stub itself (learning experience here)" do
-    FireEagle.stubs(:foo).returns("bar")
-    FireEagle.foo.should.equal "bar"
+    FireEagle::Base.stubs(:foo).returns("bar")
+    FireEagle::Base.foo.should.equal "bar"
   end
   
 end

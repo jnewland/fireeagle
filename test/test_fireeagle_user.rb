@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 context "The FireEagle::User class" do
   
   setup do
-    @f = FireEagle.new(:token => "foo", :secret => "bar")
+    @f = FireEagle::Base.new(:token => "foo", :secret => "bar")
     @error_response = <<-RESPONSE
     <ResultSet version="1.0">
     	<Error>1</Error>
@@ -59,6 +59,12 @@ context "The FireEagle::User class" do
     	</Result>
     </ResultSet>
     RESPONSE
+    @update_response = <<-RESPONSE
+    <ResultSet version="1.0">
+    	<Error>0</Error>
+    	<ErrorMessage>No error</ErrorMessage>
+      </ResultSet>
+    RESPONSE
     @response = MockSuccess.new
     @response.expects(:body).returns(@token_response)
     Net::HTTP.expects(:get_response).returns(@response)    
@@ -84,10 +90,14 @@ context "The FireEagle::User class" do
   end
   
   
-  xspecify "should be able to set a location" do
-  end
-  
-  xspecify "should be able to query a location" do
+  specify "should be able to set a location" do
+    #set the location
+    @response.expects(:body).returns(@update_response)
+    Net::HTTP.expects(:get_response).returns(@response)
+    @l = FireEagle::Location.new(:country => "Belize")
+    @set_location = (@user.location = @l)
+    @set_location.should.be.an.instance_of FireEagle::Location
+    @set_location.should.be.equal @l
   end
   
 end

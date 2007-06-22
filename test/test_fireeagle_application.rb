@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 context "The FireEagle::Application class" do
   
   setup do
-    @f = FireEagle.new(:token => "foo", :secret => "bar")
+    @f = FireEagle::Base.new(:token => "foo", :secret => "bar")
     @application = @f.application
     @response = MockSuccess.new
     @error_response = <<-RESPONSE

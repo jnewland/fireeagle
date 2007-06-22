@@ -6,7 +6,7 @@ require 'syntax/convertors/html'
 require 'erb'
 require File.dirname(__FILE__) + '/../lib/fireeagle/version.rb'
 
-version  = Fireeagle::VERSION::STRING
+version  = FireEagle::VERSION::STRING
 download = 'http://rubyforge.org/projects/fireeagle'
 
 class Fixnum

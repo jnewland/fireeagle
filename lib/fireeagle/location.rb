@@ -1,35 +1,7 @@
-# Locale     String    Locale code
-# Quality   Integer   quality of the input address
-# Result.UpdateTime   Date  W3C format time of the most recent location update from which response location is generated (UTC time)
-# Result.Quality  Integer   Quality of the result (geocoding quality, not necessarily precision)
-# Result.Latitude   Float   Latitude of matched point in degrees
-# Result.Longitude  Float   Longitude of matched point in degrees
-# Result.OffsetLat  Float   Latitude of offset point in degrees
-# Result.OffsetLon  Float   Longitude of offset point in degrees
-# Result.Radius   Integer   Radius of matched area in meters
-# Result.BoundingBox  Container   Bounding box
-# Result.Name   String  POI/AOI name or Airport code
-# Result.Line1  String  First line of address (House Street UnitType Unit)
-# Result.Line2  String  Second line of address (City State Zip in the US)
-# Result.Line3  String  Third line of address
-# Result.House  String  House number
-# Result.Street   String/Container  Street name or container for detailed street data
-# Result.XStreet  String/Container  Cross street name or container for detailed street data (if S flag is set)
-# Result.UnitType   String  Unit type
-# Result.Unit   String  Unit/Suite/Apartment/Box
-# Result.Postal   String  Postal code
-# Result.Neighborhood   String  Neighborhood name
-# Result.City   String  City name
-# Result.County   String  County name (US/Canada only)
-# Result.State  String  State/Province name
-# Result.Country  String  Country name
-# Result.CountyCode   String  County 3166-2 code
-# Result.StateCode  String  State 3166-2 code
-# Result.CountryCode  String  Country 3166-1 code
-# Result.Timezone   String  Timezone tz name
+#Describes a location
 class FireEagle::Location
   
-  ATTRIBUTES = :locale, :quality, :updatetime, :latitute, :longitude, :offsetlat, :offsetlon, 
+  DETAILS = :locale, :quality, :updatetime, :latitute, :longitude, :offsetlat, :offsetlon, 
               :radius, :boundinglatnorth, :boundinglatsouth, :boundinglateast, :boundinglatwest,
               :name, :line1, :line2, :line3, :line4, :house, :street, :xstreet, :unittype, :unit,
               :neighborhood, :city, :county, :state, :country, :coutrycode, :statecode, :countrycode,
@@ -40,8 +12,17 @@ class FireEagle::Location
   
   attr_reader :details
   
+  #Create an instance of FireEagle::Location. There are some specific requirements for combinations of elements in the <code>options</code> Hash:
+  #
+  #* Requires all or none of :lat, :long
+  #* Requires all or none of :mnc, :mcc, :lac, :cellid
+  #* Requires all or none of :street1, :street2
+  #* Requires :postal or :city with :street1 and :street2
+  #* Requires :city or :postal with :addr
+  #* Requires :state, :country, or :postal with :city
+  #* Requires :country with :postal if not in US
   def initialize(options = {}, verify_attributes = true)
-    option = options.reject { |key, value| ATTRIBUTES.include?(key) }
+    option = options.reject { |key, value| DETAILS.include?(key) }
     
     if verify_attributes
       raise FireEagle::ArgumentError, "Requires all or none of :lat, :long" unless options.has_all_or_none_keys?(:lat, :long)
@@ -57,6 +38,7 @@ class FireEagle::Location
   end
   
   class << self
+    #Create a new instance of FireEagle::Location from the XML returned from Yahoo!
     def new_from_xml(doc)
       #build the massive hash needed for a location
       options = { }

@@ -5,8 +5,8 @@ README.txt
 Rakefile
 lib/fireeagle.rb
 lib/fireeagle/application.rb
+lib/fireeagle/apibase.rb
 lib/fireeagle/base.rb
-lib/fireeagle/exceptions.rb
 lib/fireeagle/location.rb
 lib/fireeagle/user.rb
 lib/fireeagle/version.rb

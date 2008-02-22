@@ -53,10 +53,6 @@ class FireEagle
       puts "Access token: #{@access_token.inspect}"
     end
 
-    def json?
-      format == FireEagle::FORMAT_JSON
-    end
-
     def lookup(params)
       get_access_token unless @access_token
 
@@ -108,11 +104,15 @@ class FireEagle
     end
     alias_method :location, :user
 
+  protected
+
     def xml?
       format == FireEagle::FORMAT_XML
     end
 
-  protected
+    def json?
+      format == FireEagle::FORMAT_JSON
+    end
 
     def create_token(response)
       token = Hash[*response.body.split("&").map { |x| x.split("=") }.flatten]

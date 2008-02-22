@@ -83,7 +83,12 @@ class FireEagle
     def get_access_token
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless debug?
       response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
+      
+      puts response.body
+      
       request_token = create_token(response)
+      
+      puts request_token.inspect
     
       ## User interaction required
     
@@ -94,6 +99,7 @@ class FireEagle
       ## Back to our regularly scheduled access token retrieval
     
       response = get(FireEagle::ACCESS_TOKEN_PATH, :token => request_token)
+      puts response.body
       @access_token = create_token(response)
       puts "Access token: #{@access_token.inspect}"
     end
@@ -108,7 +114,7 @@ class FireEagle
     # 
     # Location Hash keys, in order of priority:
     # 
-    # [<tt>(:lat, :lon)<tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
+    # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
     # [<tt>:'place-id'</tt>]                Place ID - valid values decrypts to an integer value 
     # [<tt>:geom</tt>]                    a GeoJSON / GeoRSS element such as a bounding box, shape file, polygon, or point
     # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
@@ -118,7 +124,7 @@ class FireEagle
     # [<tt>:state</tt>]                   state (combined with address, postal, city, and country when available)
     # [<tt>:country</tt>]                 country (combined with address, postal, city, and state when available)
     # [<tt>:q</tt>]                       Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
-    #    
+    # 
     # Not yet supported:
     # 
     # * <tt>upcoming-venue-id</tt>
@@ -127,7 +133,7 @@ class FireEagle
     def lookup(params)
       get_access_token unless @access_token
 
-      response = get(FireEagle::LOOKUP_API_PATH <tt> ".#{format}", :params => params)
+      response = get(FireEagle::LOOKUP_API_PATH + ".#{format}", :params => params)
 
       puts response.body if debug?
 
@@ -148,7 +154,7 @@ class FireEagle
     # 
     # Location Hash keys, in order of priority:
     # 
-    # [<tt>(:lat, :lon)<tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
+    # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
     # [<tt>:'place-id'</tt>]                Place ID - valid values decrypts to an integer value 
     # [<tt>:geom</tt>]                    a GeoJSON / GeoRSS element such as a bounding box, shape file, polygon, or point
     # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
@@ -158,9 +164,9 @@ class FireEagle
     # [<tt>:state</tt>]                   state (combined with address, postal, city, and country when available)
     # [<tt>:country</tt>]                 country (combined with address, postal, city, and state when available)
     # [<tt>:q</tt>]                       Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
-    #    
+    #
     # Not yet supported:
-    # 
+    #
     # * <tt>upcoming-venue-id</tt>
     # * <tt>yahoo-local-id</tt>
     # * <tt>plazes-id</tt>
@@ -217,7 +223,7 @@ class FireEagle
     #
     # Location Hash keys, in order of priority:
     # 
-    # [<tt>(:lat, :lon)<tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
+    # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
     # [<tt>:'place-id'</tt>]                Place ID - valid values decrypts to an integer value 
     # [<tt>:geom</tt>]                    a GeoJSON / GeoRSS element such as a bounding box, shape file, polygon, or point
     # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
@@ -227,7 +233,7 @@ class FireEagle
     # [<tt>:state</tt>]                   state (combined with address, postal, city, and country when available)
     # [<tt>:country</tt>]                 country (combined with address, postal, city, and state when available)
     # [<tt>:q</tt>]                       Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
-    #    
+    #
     # Not yet supported:
     # 
     # * <tt>upcoming-venue-id</tt>

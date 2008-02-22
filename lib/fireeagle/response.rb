@@ -1,8 +1,6 @@
 class FireEagle
   class Response
 
-    attr_reader :users
-
     #Parses the XML response from FireEagle
     def initialize(doc)
       doc = Hpricot(doc) unless doc.is_a?(Hpricot::Doc || Hpricot::Elem)
@@ -16,6 +14,11 @@ class FireEagle
     #does the response indicate success?
     def success?
       @doc.at("/rsp").attributes["stat"] == "ok"
+    end
+
+    #An array of of User-specific tokens and their Location at all levels the Client can see and larger.
+    def users
+      @users
     end
 
   end

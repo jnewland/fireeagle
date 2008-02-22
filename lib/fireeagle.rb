@@ -5,7 +5,7 @@ require 'oauth/client/helper'
 require 'oauth/request_proxy/net_http'
 require 'json'
 
-module FireEagle
+class FireEagle
   SERVER = "http://fireagle.yahoo.net"
   REQUEST_TOKEN_PATH = "/oauth/request_token"
   ACCESS_TOKEN_PATH  = "/oauth/access_token"
@@ -14,5 +14,5 @@ module FireEagle
   LOOKUP_API_PATH    = "/api/0.1/lookup"
   UPDATE_API_PATH    = "/api/0.1/update"
   FORMAT_JSON        = "json"
-  FORMAT_XML
+  FORMAT_XML         = "xml"
 end

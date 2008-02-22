@@ -77,4 +77,24 @@ describe "FireEagle" do
     end
   end
 
+  describe "updating" do
+
+    before(:each) do
+      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      @response = mock('response', :body => XML_LOCATION_RESPONSE)
+      @client.stub!(:request).and_return(@response)
+    end
+
+    it "requires all or none of :lat, :lon" do
+      lambda { @client.update(:lat => 1) }.should raise_error(FireEagle::ArgumentError)
+      lambda { @client.update(:lat => 1, :lon => 2) }.should_not raise_error(FireEagle::ArgumentError)
+    end
+
+    it "requires all or none of :mnc, :mcc, :lac, :cid" do
+      lambda { @client.update(:mcc => 123, :lac => "whatever", :cid => true) }.should raise_error(FireEagle::ArgumentError)
+      lambda { @client.update(:mcc => 123, :mnc => 123123, :lac => "whatever", :cid => true) }.should_not raise_error(FireEagle::ArgumentError)
+    end
+
+  end
+
 end

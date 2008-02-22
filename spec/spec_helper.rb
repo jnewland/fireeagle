@@ -63,8 +63,3 @@ XML_SUCCESS_RESPONSE = <<-RESPONSE
 RESPONSE
 
 require File.dirname(__FILE__) + '/../lib/fireeagle'
-
-class MockSuccess < Net::HTTPSuccess #:nodoc: all
-  def initialize
-  end
-end

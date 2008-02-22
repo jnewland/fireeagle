@@ -71,8 +71,16 @@ class FireEagle
       end
     end
 
-    def update(params)
+    def update(params = {})
       get_access_token unless @access_token
+
+      params.map do |k,v|
+        params[k.to_sym] = v
+      end
+
+      params = params.reject { |key, value| !FireEagle::UPDATE_PARAMS.include?(key) }
+      raise FireEagle::ArgumentError, "Requires all or none of :lat, :lon" unless params.has_all_or_none_keys?(:lat, :lon)
+      raise FireEagle::ArgumentError, "Requires all or none of :mnc, :mcc, :lac, :cellid" unless params.has_all_or_none_keys?(:mnc, :mcc, :lac, :cid)
     
       response = post(FireEagle::UPDATE_API_PATH + ".#{format}", :params => params)
     

@@ -14,7 +14,7 @@ require File.join(File.dirname(__FILE__), 'lib', 'fireeagle', 'version')
 
 AUTHOR = 'Jesse Newland'  # can also be an array of Authors
 EMAIL = "jnewland@gmail.com"
-DESCRIPTION = "Fire Eagle is a site that keeps track of your current location and helps you share it with other sites and services safely. There are hundreds of potential applications. This gem exposes the FireEagle API as Ruby Classes"
+DESCRIPTION = "FireEagle is a site that keeps track of your current location and helps you share it with other sites and services safely. There are hundreds of potential applications. This gem wraps the FireEagle API"
 GEM_NAME = 'fireeagle' # what ppl will type to install your gem
 
 @config_file = "~/.rubyforge/user-config.yml"
@@ -71,7 +71,7 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
-  p.extra_deps = [['hpricot', '>= 0.5.145'] ]     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
+  p.extra_deps = [ ['oauth', '>= 0.2.1'], ['json', '>= 1.1.1'] ]     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
 end
 

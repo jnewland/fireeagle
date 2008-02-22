@@ -98,12 +98,19 @@ class FireEagle
         response.body
       end
     end
-  
+    alias_method :location, :user
+
     def xml?
       format == FireEagle::FORMAT_XML
     end
 
   protected
+
+    def parse_response(doc)
+      doc = Hpricot(doc) unless doc.is_a?(Hpricot::Doc)
+      raise FireEagle::FireEagleException, doc.at("/rsp/err").attributes["msg"] if doc.at("/rsp").attributes["stat"] == "fail"
+      FireEagle::Location.new_from_xml(doc)
+    end
 
     def create_token(response)
       token = Hash[*response.body.split("&").map { |x| x.split("=") }.flatten]

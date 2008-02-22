@@ -67,4 +67,14 @@ describe "FireEagle" do
     
   end
   
+  describe "xml parsing" do
+    it "should raise an exception when returned xml with a status of fail" do
+      client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      lambda do
+        doc = Hpricot(XML_ERROR_RESPONSE)
+        client.__send__(:parse_response, doc)
+      end.should raise_error(FireEagle::FireEagleException)
+    end
+  end
+
 end

@@ -36,6 +36,7 @@ class FireEagle
     end
 
     def get_access_token
+      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless debug?
       response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
       request_token = create_token(response)
     
@@ -108,36 +109,25 @@ class FireEagle
       token = Hash[*response.body.split("&").map { |x| x.split("=") }.flatten]
       OAuth::Token.new(token["oauth_token"], token["oauth_token_secret"])
     end
-  
+
     def debug?
       @debug == true
     end
 
     def get(url, options = {})
-      options = {
-        :params => {},
-        :token  => access_token
-      }.merge(options)
-    
-      request_uri = URI.parse(FireEagle::SERVER + url)
-      http = Net::HTTP.new(request_uri.host, request_uri.port)
-      if FireEagle::SERVER =~ /https:/
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-
-      qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
-      request = Net::HTTP::Get.new(request_uri.path + "?" + qs)
-      request.oauth!(http, consumer, options[:token])
-      http.request(request)
+      request(:get, url, options)
     end
-  
+
     def post(url, options = {})
+      request(:post, url, options)
+    end
+
+    def request(method, url, options)
       options = {
         :params => {},
         :token  => access_token
       }.merge(options)
-    
+
       request_uri = URI.parse(FireEagle::SERVER + url)
       http = Net::HTTP.new(request_uri.host, request_uri.port)
       if FireEagle::SERVER =~ /https:/
@@ -145,10 +135,17 @@ class FireEagle
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
 
-      request = Net::HTTP::Post.new(request_uri.path)
-      request.set_form_data(options[:params])
+      request = nil
+      if method == :post
+        request = Net::HTTP::Post.new(request_uri.path)
+        request.set_form_data(options[:params])
+      elsif method == :get
+        qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
+        request = Net::HTTP::Get.new(request_uri.path + "?" + qs)
+      end
       request.oauth!(http, consumer, options[:token])
       http.request(request)
     end
+
   end
 end

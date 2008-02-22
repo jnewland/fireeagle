@@ -6,8 +6,8 @@ describe "FireEagle" do
 
     it "should require OAuth Consumer Key and Secret" do
       lambda do
-        client = FireEagle::Client.new()
-      end.should raise_error(ArgumentError)
+        client = FireEagle::Client.new({})
+      end.should raise_error(FireEagle::ArgumentError)
     end
     
     it "should initialize an OAuth::Consumer" do
@@ -33,6 +33,13 @@ describe "FireEagle" do
       client.access_token.should == nil
     end
     
+    it "should require token exchange before calling any API methods" do
+      client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
+      lambda do
+        client.user
+      end.should raise_error(FireEagle::ArgumentError)
+    end
+
     it "should generate a Request Token URL" do
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
       @token = mock("token", :token => 'foo')

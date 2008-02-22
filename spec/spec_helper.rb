@@ -7,59 +7,70 @@ rescue LoadError
 end
 
 XML_ERROR_RESPONSE = <<-RESPONSE
-<?xml version="1.0" encoding="UTF−8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rsp stat="fail">
   <err code="11" msg="Something bad happened" />
 </rsp>
 RESPONSE
 
 XML_LOCATION_RESPONSE = <<-RESPONSE
-<?xml version="1.0" encoding="UTF−8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rsp stat="ok" xmlns:georss="http://www.georss.org/georss">
   <user token="16w3z6ysudxt">
-    <location−hierarchy>
-      <location best−guess="false">
-        <georss:box>38.5351715088 −121.7948684692 38.575668335 −121.6747894287</georss:box>
+    <location-hierarchy>
+      <location best-guess="false">
+        <georss:box>38.5351715088 -121.7948684692 38.575668335 -121.6747894287</georss:box>
         <level>3</level>
-        <level−name>city</level−name>
-        <located−at>2008−01−22T14:23:11−08:00</located−at>
+        <level-name>city</level-name>
+        <located-at>2008-01-22T14:23:11-08:00</located-at>
         <name>Davis, CA</name>
-        <place−id>u4L9ZOObApTdx1q3</place−id>
+        <place-id>u4L9ZOObApTdx1q3</place-id>
       </location>
-      <location best−guess="true">
-        <georss:box>38.3131217957 −122.4230804443 38.9261016846 −121.5012969971</georss:box>
+      <location best-guess="true">
+        <georss:box>38.3131217957 -122.4230804443 38.9261016846 -121.5012969971</georss:box>
         <level>4</level>
-        <level−name>region</level−name>
-        <located−at>2008−01−22T18:45:26−08:00</located−at>
+        <level-name>region</level-name>
+        <located-at>2008-01-22T18:45:26-08:00</located-at>
         <name>Yolo County, California</name>
-        <place−id>YUYMh9CbBJ61mgFe</place−id>
+        <place-id>YUYMh9CbBJ61mgFe</place-id>
       </location>
-      <location best−guess="false">
-        <georss:box>32.5342788696 −124.4150238037 42.0093803406 −114.1308135986</georss:box>
+      <location best-guess="false">
+        <georss:box>32.5342788696 -124.4150238037 42.0093803406 -114.1308135986</georss:box>
         <level>5</level>
-        <level−name>state</level−name>
-        <located−at>2008−01−22T18:45:26−08:00</located−at>
+        <level-name>state</level-name>
+        <located-at>2008-01-22T18:45:26-08:00</located-at>
         <name>California</name>
-        <place−id>SVrAMtCbAphCLAtP</place−id>
+        <place-id>SVrAMtCbAphCLAtP</place-id>
       </location>
-      <location best−guess="false">
-        <georss:box>18.9108390808 −167.2764129639 72.8960571289 −66.6879425049</georss:box>
+      <location best-guess="false">
+        <georss:box>18.9108390808 -167.2764129639 72.8960571289 -66.6879425049</georss:box>
         <level>6</level>
-        <level−name>country</level−name>
-        <located−at>2008−01−22T18:45:26−08:00</located−at>
+        <level-name>country</level-name>
+        <located-at>2008-01-22T18:45:26-08:00</located-at>
         <name>United States</name>
-        <place−id>4KO02SibApitvSBieQ</place−id>
+        <place-id>4KO02SibApitvSBieQ</place-id>
       </location>
-    </location−hierarchy>
+    </location-hierarchy>
   </user>
 </rsp>
 RESPONSE
 
 XML_SUCCESS_RESPONSE = <<-RESPONSE
-<?xml version="1.0" encoding="UTF−8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rsp stat="ok">
   <user token="16w3z6ysudxt"/>
 </rsp>
+RESPONSE
+
+XML_LOCATION_CHUNK = <<-RESPONSE
+<location best-guess="false">
+  <georss:box>38.5351715088 -121.7948684692 38.575668335 -121.6747894287</georss:box>
+  <level>3</level>
+  <level-name>city</level-name>
+  <located-at>2008-01-22T14:23:11-08:00</located-at>
+  <name>Davis, CA</name>
+  <place-id>u4L9ZOObApTdx1q3</place-id>
+</location>
 RESPONSE
 
 require File.dirname(__FILE__) + '/../lib/fireeagle'

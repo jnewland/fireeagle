@@ -6,6 +6,7 @@ Rakefile
 lib/fireeagle.rb
 lib/fireeagle/client.rb
 lib/fireeagle/location.rb
+lib/fireeagle/response.rb
 lib/fireeagle/version.rb
 scripts/txt2html
 setup.rb

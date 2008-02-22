@@ -1,3 +1,4 @@
+require 'time'
 require 'net/https'
 require 'rubygems'
 gem 'oauth', ">= 0.2.1"
@@ -45,3 +46,5 @@ end
 
 require File.dirname(__FILE__) + '/fireeagle/client'
 require File.dirname(__FILE__) + '/fireeagle/location'
+require File.dirname(__FILE__) + '/fireeagle/user'
+require File.dirname(__FILE__) + '/fireeagle/response'

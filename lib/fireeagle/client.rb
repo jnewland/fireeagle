@@ -1,4 +1,4 @@
-module FireEagle
+class FireEagle
   class Client
     attr_reader :access_token, :consumer, :format
 
@@ -12,20 +12,32 @@ module FireEagle
       options.map do |k,v|
         options[k.to_sym] = v
       end
-    
+      raise FireEagle::ArgumentError, "OAuth Consumer Key and Secret required" if options[:consumer_key].nil? || options[:consumer_secret].nil?
       @consumer = OAuth::Consumer.new(options[:consumer_key], options[:consumer_secret])
       @debug = options[:debug]
       @format = options[:format]
       if options[:access_token] && options[:access_token_secret]
         @access_token = OAuth::Token.new(options[:access_token], options[:access_token_secret])
+      else
+        @access_token = nil
       end
+    end
+    
+    def request_token_url
+      response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
+      @request_token = create_token(response)
+      return "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"
+    end
+    
+    def convert_to_access_token
+      raise FireEagle::ArgumentError, "call #request_token_url and have user authorize the token first" if @request_token.nil?
+      response = get(FireEagle::ACCESS_TOKEN_PATH, :token => @request_token)
+      @access_token = create_token(response)
     end
 
     def get_access_token
       response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
-      puts "response: #{response.body}"
       request_token = create_token(response)
-      puts "Request token: #{request_token.inspect}"
     
       ## User interaction required
     

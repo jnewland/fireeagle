@@ -8,7 +8,7 @@ require 'json'
 require 'hpricot'
 
 class FireEagle
-  SERVER = "http://fireeagle.yahoo.net"
+  SERVER = "https://fireeagle.yahooapis.com"
   REQUEST_TOKEN_PATH = "/oauth/request_token"
   ACCESS_TOKEN_PATH  = "/oauth/access_token"
   AUTHORIZATION_URL  = "#{SERVER}/oauth/authorize"

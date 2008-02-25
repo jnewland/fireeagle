@@ -210,6 +210,8 @@ class FireEagle
     end
     alias_method :location, :user
 
+    # <b>NOTE: not implemented yet</b>
+    #
     # Query for Users of an Application who have updated their Location recently. Returns a list of 
     # Users for the Application with recently updated locations.
     def recent(count = 10, start = 0)
@@ -226,8 +228,8 @@ class FireEagle
       end
     end
 
-    # Query for Users of an Application who have updated their Location recently. Returns a list of 
-    # Users and their Locations at all levels the Application can see and larger.
+    # <b>NOTE: not implemented yet</b>
+    # Takes a Place ID or a Location and returns a list of users of your application who are within the bounding box of that Location.
     #
     # Location Hash keys, in order of priority:
     # 

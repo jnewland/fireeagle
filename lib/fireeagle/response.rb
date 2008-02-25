@@ -22,7 +22,7 @@ class FireEagle
 
     #A Location array.
     def locations
-      @locations ||= @doc.search("/locations").map do |location|
+      @locations ||= @doc.search("/rsp/locations/location").map do |location|
         FireEagle::Location.new(location.to_s)
       end
     end

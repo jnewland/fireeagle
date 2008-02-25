@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 
 describe "FireEagle Response" do
 
-  describe "location parsing" do
+  describe "user / location parsing" do
 
     before(:each) do
       @response = FireEagle::Response.new(XML_LOCATION_RESPONSE)
@@ -26,6 +26,30 @@ describe "FireEagle Response" do
     
     it "should have users' loactions" do
       @response.users.first.locations.size.should == 4
+    end
+
+  end
+  
+  describe "location parsing" do
+
+    before(:each) do
+      @response = FireEagle::Response.new(XML_LOOKUP_RESPONSE)
+    end
+
+    it "should indicate success" do
+      @response.success?.should == true
+    end
+
+    it "should have an array of locations" do
+      @response.locations.size.should == 9
+    end
+
+    it "should have each location's place_id" do
+      @response.locations.first.place_id.should == "IrhZMHuYA5s1fFi4Qw"
+    end
+
+    it "should have each location's name" do
+      @response.locations.first.name.should == "Alpharetta, GA 30022"
     end
 
   end

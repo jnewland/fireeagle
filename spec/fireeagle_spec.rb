@@ -67,7 +67,7 @@ describe "FireEagle" do
 
   end
 
-  describe "updating" do
+  describe "update method" do
 
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
@@ -91,7 +91,7 @@ describe "FireEagle" do
 
   end
 
-  describe "querying" do
+  describe "user method" do
 
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
@@ -103,8 +103,30 @@ describe "FireEagle" do
       @client.user.best_guess.name.should == "Yolo County, California"
     end
 
-    it "should several locations" do
+    it "should return several locations" do
       @client.user.locations.size.should == 4
+    end
+
+  end
+  
+  describe "lookup method" do
+
+    before(:each) do
+      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      @response = mock('response', :body => XML_LOOKUP_RESPONSE)
+      @client.stub!(:request).and_return(@response)
+    end
+
+    it "should return an array of Locations" do
+      @client.lookup(:q => "30022").size.should == 9
+    end
+
+    it "should return a place id for each" do
+      @client.lookup(:q => "30022").first.place_id.should == "IrhZMHuYA5s1fFi4Qw"
+    end
+
+    it "should return a name for each" do
+      @client.lookup(:q => "30022").first.name.should == "Alpharetta, GA 30022"
     end
 
   end

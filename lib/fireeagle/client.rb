@@ -28,23 +28,47 @@ class FireEagle
     # loose has the potential to reveal a much greater amount of personal data. In an attempt to mitigate this, we will
     # only grant general-purpose tokens to web applications (contact us with details, if you seek an exception). In
     # addition, we require developers to provide a restrictive IP range at registration time in order to further mitigate
-    # the risk of general−purpose tokens being used inappropriately.
+    # the risk of general-purpose tokens being used inappropriately.
     #
     # In general, OAuth tokens should be considered sacrosanct in order to help us respect our users' privacy. Please
     # take this responsibility on as your own. If your Application Oauth tokens are compromised, FireEagle will
     # turn off your application service until the problem is resolved.
     #
-    # If the Client is initialized without an OAuth Token, it's assumed you're operating a non-web based application.
+    # If the Client is initialized without an OAuth access token., it's assumed you're operating a non-web based application.
     #
     # == Non web-based applications
     #
     # For non web-based applications, such as a mobile client application, the authentication between the user and
     # the application is slightly different. The request token is displayed to the user by the client application. The
-    # user then logs into the FireEagle website (using request_token_url) and enters this code to authorize the application.
+    # user then logs into the FireEagle website (using mobile_authorization_url) and enters this code to authorize the application.
     # When the user finishes the authorization step the client application exchanges the request token for an access token
-    # (using convert_to_access_token). This is a lightweight method for non−web application users to authenticate an application
+    # (using convert_to_access_token). This is a lightweight method for non-web application users to authenticate an application
     # without entering any identifying information into a potentially insecure application. Request tokens are valid for only
     # 1 hour after being issued.
+    #
+    # == Example mobile-based authentication flow:
+    #
+    # Initialize a client with your consumer key, consumer secret, and your mobile application id:
+    #
+    #   >> c = FireEagle::Client.new(:consumer_key => "key", :consumer_secret => "sekret", :app_id => 12345)
+    #   => #<FireEagle::Client:0x1ce2e70 ... >
+    #
+    # Generate a request token:
+    #
+    #   >> c.request_token
+    #   => #<OAuth::Token:0x1cdb5bc @token="ENTER_THIS_TOKEN", @secret="sekret">
+    #
+    # Prompt your user to visit your app's mobile authorization url and enter ENTER_THIS_TOKEN:
+    #
+    #   >> c.mobile_authorization_url
+    #   => "http://fireeagle.yahoo.net/oauth/mobile_auth/12345"
+    #
+    # Once the user has indicated to you that they've done this, convert their request token to an access token:
+    #
+    #   >> c.convert_to_access_token
+    #   => #<OAuth::Token:0x1cd3bf0 @token="access_token", @secret="access_token_secret">
+    #
+    # You're done!
     def initialize(options = {})
       options = {
         :debug  => false,
@@ -76,7 +100,7 @@ class FireEagle
     # Return the Fire Eagle authorization URL for your mobile application. At this URL, the User will be prompted for their request_token.
     def mobile_authorization_url
       raise FireEagle::ArgumentError, ":app_id required" if @app_id.nil?
-      "#{FireEagle::MOBILE_AUTH_URL}#{app_id}"
+      "#{FireEagle::MOBILE_AUTH_URL}#{@app_id}"
     end
 
     # Obtain an unauthorized OAuth Request token and return the URL the user must access to authorize this token. For use by web-based and desktop-based applications.

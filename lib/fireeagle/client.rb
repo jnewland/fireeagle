@@ -135,8 +135,6 @@ class FireEagle
 
       response = get(FireEagle::LOOKUP_API_PATH + ".#{format}", :params => params)
 
-      puts response.body if debug?
-
       if json?
         JSON.parse(response.body)
       else
@@ -173,17 +171,9 @@ class FireEagle
     def update(location = {})
       get_access_token unless @access_token
 
-      location.map do |k,v|
-        location[k.to_sym] = v
-      end
+      location = sanitize_location_hash(location)
 
-      location = location.reject { |key, value| !FireEagle::UPDATE_PARAMS.include?(key) }
-      raise FireEagle::ArgumentError, "Requires all or none of :lat, :lon" unless location.has_all_or_none_keys?(:lat, :lon)
-      raise FireEagle::ArgumentError, "Requires all or none of :mnc, :mcc, :lac, :cellid" unless location.has_all_or_none_keys?(:mnc, :mcc, :lac, :cid)
-    
       response = post(FireEagle::UPDATE_API_PATH + ".#{format}", :params => location)
-    
-      puts response.body if debug?
 
       if json?
         JSON.parse(response.body)
@@ -198,8 +188,6 @@ class FireEagle
 
       response = get(FireEagle::USER_API_PATH + ".#{format}")
 
-      puts response.body if debug?
-
       if json?
         JSON.parse(response.body)
       else
@@ -208,16 +196,22 @@ class FireEagle
     end
     alias_method :location, :user
 
-    # <b>TODO: implement</b>
-    #
     # Query for Users of an Application who have updated their Location recently. Returns a list of 
     # Users for the Application with recently updated locations.
     def recent(count = 10, start = 0)
-      
+      get_access_token unless @access_token
+
+      params = { :count => count, :start => start }
+
+      response = get(FireEagle::RECENT_API_PATH + ".#{format}", :params => params)
+
+      if json?
+        JSON.parse(response.body)
+      else
+        FireEagle::Response.new(response.body).users
+      end
     end
 
-    # <b>TODO: implement</b>
-    #
     # Query for Users of an Application who have updated their Location recently. Returns a list of 
     # Users and their Locations at all levels the Application can see and larger.
     #
@@ -240,10 +234,31 @@ class FireEagle
     # * <tt>yahoo-local-id</tt>
     # * <tt>plazes-id</tt>
     def within(location = {}, count = 10, start = 0)
-      
+      get_access_token unless @access_token
+
+      location = sanitize_location_hash(location)
+
+      response = get(FireEagle::WITHIN_API_PATH + ".#{format}", :params => location)
+
+      if json?
+        JSON.parse(response.body)
+      else
+        FireEagle::Response.new(response.body).locations
+      end
     end
 
   protected
+
+    def sanitize_location_hash(location)
+      location.map do |k,v|
+        location[k.to_sym] = v
+      end
+
+      location = location.reject { |key, value| !FireEagle::UPDATE_PARAMS.include?(key) }
+      raise FireEagle::ArgumentError, "Requires all or none of :lat, :lon" unless location.has_all_or_none_keys?(:lat, :lon)
+      raise FireEagle::ArgumentError, "Requires all or none of :mnc, :mcc, :lac, :cellid" unless location.has_all_or_none_keys?(:mnc, :mcc, :lac, :cid)
+      location
+    end
 
     def xml? #:nodoc:
       format == FireEagle::FORMAT_XML
@@ -294,7 +309,10 @@ class FireEagle
         request = Net::HTTP::Get.new(request_uri.path + "?" + qs)
       end
       request.oauth!(http, consumer, options[:token])
-      http.request(request)
+      response = http.request(request)
+      raise FireEagle::FireEagleException, "Internal Server Error" if response.code == '500'
+      raise FireEagle::FireEagleException, "Method Not Implemented Yet" if response.code == '400'
+      response
     end
 
   end

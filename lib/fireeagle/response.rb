@@ -10,7 +10,7 @@ class FireEagle
 
     #does the response indicate success?
     def success?
-      @doc.at("/rsp").attributes["stat"] == "ok"
+      @doc.at("/rsp").attributes["stat"] == "ok" rescue false
     end
 
     #An array of of User-specific tokens and their Location at all levels the Client can see and larger.

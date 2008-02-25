@@ -15,6 +15,8 @@ class FireEagle
   USER_API_PATH      = "/api/0.1/user"
   LOOKUP_API_PATH    = "/api/0.1/lookup"
   UPDATE_API_PATH    = "/api/0.1/update"
+  RECENT_API_PATH    = "/api/0.1/recent"
+  WITHIN_API_PATH    = "/api/0.1/within"
   FORMAT_JSON        = "json"
   FORMAT_XML         = "xml"
   UPDATE_PARAMS      = :lat, :lon, :'place-id', :geom, :address, :mnc, :mcc, :lac, :cid, :postal, :city, :state, :country, :q,

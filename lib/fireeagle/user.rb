@@ -9,14 +9,14 @@ class FireEagle
 
     #The User-specific token for this Client.
     def token
-      @token ||= @doc.at("/user").attributes["token"]
+      @token ||= @doc.at("/user").attributes["token"] rescue nil
     end
 
     #FireEagle's "best guess" form this User's Location. This best guess is derived as the most accurate
     #level of the hierarchy with a timestamp in the last half an hour <b>or</b> as the most accurate
     #level of the hierarchy with the most recent timestamp.
     def best_guess
-      @best_guess ||= locations.select { |location| location.best_guess? }.first
+      @best_guess ||= locations.select { |location| location.best_guess? }.first rescue nil
     end
 
     #An Array containing all Location granularity that the Client has been allowed to

@@ -6,9 +6,6 @@ class FireEagle
       doc = Hpricot(doc) unless doc.is_a?(Hpricot::Doc || Hpricot::Elem)
       @doc = doc
       raise FireEagle::FireEagleException, @doc.at("/rsp/err").attributes["msg"] if !success? 
-      @users = doc.search("/rsp/user").map do |user|
-        FireEagle::User.new(user.to_s)
-      end
     end
 
     #does the response indicate success?
@@ -18,7 +15,16 @@ class FireEagle
 
     #An array of of User-specific tokens and their Location at all levels the Client can see and larger.
     def users
-      @users
+      @users ||= @doc.search("/rsp/user").map do |user|
+        FireEagle::User.new(user.to_s)
+      end
+    end
+
+    #A Location array.
+    def locations
+      @locations ||= @doc.search("/locations").map do |location|
+        FireEagle::Location.new(location.to_s)
+      end
     end
 
   end

@@ -140,7 +140,7 @@ class FireEagle
       if json?
         JSON.parse(response.body)
       else
-        FireEagle::Response.new(response.body)
+        FireEagle::Response.new(response.body).locations
       end
     end
 
@@ -274,11 +274,12 @@ class FireEagle
     def request(method, url, options) #:nodoc:
       options = {
         :params => {},
-        :token  => access_token
+        :token  => @access_token
       }.merge(options)
 
       request_uri = URI.parse(FireEagle::SERVER + url)
       http = Net::HTTP.new(request_uri.host, request_uri.port)
+      http.set_debug_output $stderr if debug?
       if FireEagle::SERVER =~ /https:/
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE

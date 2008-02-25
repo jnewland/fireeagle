@@ -52,7 +52,7 @@ class FireEagle
 
     #Is this Location FireEagle's best guess?
     def best_guess?
-      @best_guess ||= @doc.at("/location").attributes["best-guess"] == "true" rescue nil
+      @best_guess ||= @doc.at("/location").attributes["best-guess"] == "true" rescue false
     end
 
   end

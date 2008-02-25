@@ -12,6 +12,7 @@ class FireEagle
   REQUEST_TOKEN_PATH = "/oauth/request_token"
   ACCESS_TOKEN_PATH  = "/oauth/access_token"
   AUTHORIZATION_URL  = "#{SERVER}/oauth/authorize"
+  MOBILE_AUTH_URL    = "#{SERVER}/oauth/mobile_auth/"
   USER_API_PATH      = "/api/0.1/user"
   LOOKUP_API_PATH    = "/api/0.1/lookup"
   UPDATE_API_PATH    = "/api/0.1/update"

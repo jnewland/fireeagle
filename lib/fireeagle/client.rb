@@ -13,6 +13,7 @@ class FireEagle
     #
     # [<tt>:access_token</tt>]           OAuth Token, either User-specific or General-purpose
     # [<tt>:access_token_secret</tt>]    OAuth Token, either User-specific or General-purpose
+    # [<tt>:app_id</tt>]                 Your Mobile Application ID
     # [<tt>:debug</tt>]                  Boolean
     #
     # User-specific OAuth tokens tie FireEagle users to your application. As such, they are intended to be
@@ -58,30 +59,43 @@ class FireEagle
       @consumer = OAuth::Consumer.new(options[:consumer_key], options[:consumer_secret])
       @debug = options[:debug]
       @format = options[:format]
+      @app_id = options[:app_id]
       if options[:access_token] && options[:access_token_secret]
         @access_token = OAuth::Token.new(options[:access_token], options[:access_token_secret])
       else
         @access_token = nil
       end
     end
-    
-    # Obtain an OAuth Reuest token and return the URL the user must access to authorize this token. For use by Non web-based applications.
-    def request_token_url
+
+    # Obtain an unauthorized OAuth Request token
+    def request_token
       response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
       @request_token = create_token(response)
-      return "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"
     end
 
-    #Exchange an authorized OAuth Request token for an access token. For use by Non web-based applications.
+    # Return the Fire Eagle authorization URL for your mobile application. At this URL, the User will be prompted for their request_token.
+    def mobile_authorization_url
+      raise FireEagle::ArgumentError, ":app_id required" if @app_id.nil?
+      "#{FireEagle::MOBILE_AUTH_URL}#{app_id}"
+    end
+
+    # Obtain an unauthorized OAuth Request token and return the URL the user must access to authorize this token. For use by web-based and desktop-based applications.
+    def request_token_url
+      @request_token = request_token
+      "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"
+    end
+
+    #Exchange an authorized OAuth Request token for an access token. For use by desktop-based and mobile applications.
     def convert_to_access_token
       raise FireEagle::ArgumentError, "call #request_token_url and have user authorize the token first" if @request_token.nil?
       response = get(FireEagle::ACCESS_TOKEN_PATH, :token => @request_token)
       @access_token = create_token(response)
     end
 
-    # Interactively proceed through the OAuth Request token exchange process. For use by Non web-based applications in debud mode only.
+    # Interactively proceed through the OAuth Request token exchange process. For use by web-based and desktop-based applications in debug mode only.
     def get_access_token
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless debug?
+
       response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
       
       puts response.body
@@ -131,7 +145,7 @@ class FireEagle
     # * <tt>yahoo-local-id</tt>
     # * <tt>plazes-id</tt>
     def lookup(params)
-      get_access_token unless @access_token
+      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
       response = get(FireEagle::LOOKUP_API_PATH + ".#{format}", :params => params)
 
@@ -169,7 +183,7 @@ class FireEagle
     # * <tt>yahoo-local-id</tt>
     # * <tt>plazes-id</tt>
     def update(location = {})
-      get_access_token unless @access_token
+      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
       location = sanitize_location_hash(location)
 
@@ -184,7 +198,7 @@ class FireEagle
 
     # Returns the Location of a User.
     def user
-      get_access_token unless @access_token
+      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
       response = get(FireEagle::USER_API_PATH + ".#{format}")
 
@@ -199,7 +213,7 @@ class FireEagle
     # Query for Users of an Application who have updated their Location recently. Returns a list of 
     # Users for the Application with recently updated locations.
     def recent(count = 10, start = 0)
-      get_access_token unless @access_token
+      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
       params = { :count => count, :start => start }
 
@@ -234,7 +248,7 @@ class FireEagle
     # * <tt>yahoo-local-id</tt>
     # * <tt>plazes-id</tt>
     def within(location = {}, count = 10, start = 0)
-      get_access_token unless @access_token
+      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
       location = sanitize_location_hash(location)
 

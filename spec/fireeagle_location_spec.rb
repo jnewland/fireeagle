@@ -36,14 +36,19 @@ describe "FireEagle Location" do
     it "should represent a bounding box as a GeoRuby Envelope" do
       location = Hpricot.XML(XML_LOCATION_CHUNK)
       @location = FireEagle::Location.new(location)
-      @location.geo.class.should == GeoRuby::SimpleFeatures::Envelope
-      puts  @location.geo.inspect
+      @location.geom.class.should == GeoRuby::SimpleFeatures::Envelope
     end
 
     it "should represent an exact point as a GeoRuby Point" do
       location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
       @location = FireEagle::Location.new(location)
-      @location.geo.class.should == GeoRuby::SimpleFeatures::Point
+      @location.geom.class.should == GeoRuby::SimpleFeatures::Point
+    end
+
+    it "should be aliased as 'geo'" do
+      location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
+      @location = FireEagle::Location.new(location)
+      @location.geo.class.should == GeoRuby::SimpleFeatures::Point     
     end
 
   end

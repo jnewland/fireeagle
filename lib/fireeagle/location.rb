@@ -40,7 +40,7 @@ class FireEagle
     end
 
     # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
-    def geo
+    def geom
       if @doc.at("/location//georss:box")
         @geo ||= GeoRuby::SimpleFeatures::Geometry.from_georss(@doc.at("/location//georss:box").to_s)
       elsif @doc.at("/location//georss:point")
@@ -49,7 +49,8 @@ class FireEagle
         return nil
       end
     end
-
+    alias_method :geo, :geom
+    
     #Is this Location FireEagle's best guess?
     def best_guess?
       @best_guess ||= @doc.at("/location").attributes["best-guess"] == "true" rescue false

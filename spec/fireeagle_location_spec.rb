@@ -31,9 +31,21 @@ describe "FireEagle Location" do
     @location.located_at.should == Time.parse("2008-01-22T14:23:11-08:00")
   end
 
-  it "should represent the location's bounding box" do
-    @location.lower_corner.should == [38.5351715088, -121.7948684692]
-    @location.upper_corner.should == [38.575668335, -121.6747894287]
+  describe "GeoRuby support" do
+
+    it "should represent a bounding box as a GeoRuby Envelope" do
+      location = Hpricot.XML(XML_LOCATION_CHUNK)
+      @location = FireEagle::Location.new(location)
+      @location.geo.class.should == GeoRuby::SimpleFeatures::Envelope
+      puts  @location.geo.inspect
+    end
+
+    it "should represent an exact point as a GeoRuby Point" do
+      location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
+      @location = FireEagle::Location.new(location)
+      @location.geo.class.should == GeoRuby::SimpleFeatures::Point
+    end
+
   end
 
 end

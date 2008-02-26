@@ -6,6 +6,7 @@ require 'oauth/client/helper'
 require 'oauth/request_proxy/net_http'
 require 'json'
 require 'hpricot'
+require 'geo_ruby'
 
 class FireEagle
   SERVER = "https://fireeagle.yahooapis.com"

@@ -73,6 +73,12 @@ XML_LOCATION_CHUNK = <<-RESPONSE
 </location>
 RESPONSE
 
+XML_EXACT_LOCATION_CHUNK = <<-RESPONSE
+<location>
+  <georss:point>38.5351715088 -121.7948684692</georss:box>
+</location>
+RESPONSE
+
 XML_LOOKUP_RESPONSE = <<-RESPONSE
 <?xml version="1.0" encoding="UTF-8"?>
 <rsp stat="ok">

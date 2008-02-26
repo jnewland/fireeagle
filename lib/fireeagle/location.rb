@@ -39,15 +39,15 @@ class FireEagle
       @lower_corner ||= @georss[0..1] rescue nil
     end
 
-    #The coordinates of the upper corner of a bounding box surrounding this Location
-    def upper_corner
-      @georss ||= @doc.at("/location//georss:box").innerText.split.map{ |l| l.to_f } rescue nil
-      @upper_corner ||= @georss[2..3] rescue nil
-    end
-    
-    #The coordinates of the Location
-    def coordinates
-      @coordinates ||= @doc.at("/location//georss:point").innerText.split.map{ |l| l.to_f } rescue nil
+    # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
+    def geo
+      if @doc.at("/location//georss:box")
+        @geo ||= GeoRuby::SimpleFeatures::Geometry.from_georss(@doc.at("/location//georss:box").to_s)
+      elsif @doc.at("/location//georss:point")
+        @geo ||= GeoRuby::SimpleFeatures::Geometry.from_georss(@doc.at("/location//georss:point").to_s)
+      else
+        return nil
+      end
     end
 
     #Is this Location FireEagle's best guess?

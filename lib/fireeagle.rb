@@ -20,9 +20,9 @@ class FireEagle
   WITHIN_API_PATH    = "/api/0.1/within"
   FORMAT_JSON        = "json"
   FORMAT_XML         = "xml"
-  UPDATE_PARAMS      = :lat, :lon, :'place-id', :geom, :address, :mnc, :mcc, :lac, :cid, :postal, :city, :state, :country, :q,
-                        #not yet supported
-                        :'upcoming-venue-id', :'yahoo-local-id', :'plazes-id'
+  UPDATE_PARAMS      = :lat, :lon, :place_id, :address, :mnc, :mcc, :lac, :cid, :postal, :city, :state, :country, :q
+                        # not yet supported
+                        #,:geom, :upcoming_venue_id, :yahoo_local_id, :plazes_id
 
   class Error < RuntimeError #:nodoc:
   end

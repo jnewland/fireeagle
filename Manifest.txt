@@ -9,5 +9,4 @@ lib/fireeagle/location.rb
 lib/fireeagle/response.rb
 lib/fireeagle/user.rb
 lib/fireeagle/version.rb
-scripts/txt2html
 setup.rb

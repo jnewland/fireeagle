@@ -329,10 +329,10 @@ class FireEagle
         :token  => @access_token
       }.merge(options)
 
-      request_uri = URI.parse(FireEagle::SERVER + url)
+      request_uri = URI.parse(FireEagle::API_SERVER + url)
       http = Net::HTTP.new(request_uri.host, request_uri.port)
       http.set_debug_output $stderr if debug?
-      if FireEagle::SERVER =~ /https:/
+      if FireEagle::API_SERVER =~ /https:/
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end

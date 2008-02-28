@@ -57,14 +57,14 @@ describe "FireEagle" do
       client.authorization_url.should =~ /\?oauth_token=foo/
     end
 
-    it "should require #get_access_token be called before #convert_to_access_token" do
+    it "should require #get_request_token be called before #convert_to_access_token" do
       lambda do
         client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
         client.convert_to_access_token
       end.should raise_error(FireEagle::ArgumentError)
     end
 
-    it "should require #get_access_token be called before #authorization_url" do
+    it "should require #get_request_token be called before #authorization_url" do
       lambda do
         client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
         client.authorization_url

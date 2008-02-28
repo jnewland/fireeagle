@@ -115,13 +115,13 @@ class FireEagle
 
     # The URL the user must access to authorize this token. request_token must be called first. For use by web-based and desktop-based applications.
     def authorization_url
-      raise FireEagle::ArgumentError, "call #request_token first" if @request_token.nil?
+      raise FireEagle::ArgumentError, "call #get_request_token first" if @request_token.nil?
       "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"
     end
 
     #Exchange an authorized OAuth Request token for an access token. For use by desktop-based and mobile applications.
     def convert_to_access_token
-      raise FireEagle::ArgumentError, "call #request_token and have user authorize the token first" if @request_token.nil?
+      raise FireEagle::ArgumentError, "call #get_request_token and have user authorize the token first" if @request_token.nil?
       response = get(FireEagle::ACCESS_TOKEN_PATH, :token => @request_token)
       @access_token = create_token(response)
     end

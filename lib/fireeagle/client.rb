@@ -57,7 +57,7 @@ class FireEagle
     #
     # Generate a request token:
     #
-    #   >> c.request_token
+    #   >> c.get_request_token
     #   => #<OAuth::Token:0x1cdb5bc @token="ENTER_THIS_TOKEN", @secret="sekret">
     #
     # Prompt your user to visit your app's mobile authorization url and enter ENTER_THIS_TOKEN:
@@ -99,9 +99,12 @@ class FireEagle
     end
 
     # Obtain an <strong>new</strong> unauthorized OAuth Request token
-    def request_token
-      response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
-      @request_token = create_token(response)
+    def get_request_token(force_token_regeneration = false)
+      if force_token_regeneration || @request_token.nil?
+        response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
+        @request_token = create_token(response)
+      end
+      @request_token
     end
 
     # Return the Fire Eagle authorization URL for your mobile application. At this URL, the User will be prompted for their request_token.
@@ -110,43 +113,17 @@ class FireEagle
       "#{FireEagle::MOBILE_AUTH_URL}#{@app_id}"
     end
 
-    # Obtain an <strong>new</strong> unauthorized OAuth Request token and return the URL the user must access to authorize this token. For use by web-based and desktop-based applications.
-    def request_token_url
-      @request_token = request_token
+    # The URL the user must access to authorize this token. request_token must be called first. For use by web-based and desktop-based applications.
+    def authorization_url
+      raise FireEagle::ArgumentError, "call #request_token first" if @request_token.nil?
       "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"
     end
 
     #Exchange an authorized OAuth Request token for an access token. For use by desktop-based and mobile applications.
     def convert_to_access_token
-      raise FireEagle::ArgumentError, "call #request_token_url and have user authorize the token first" if @request_token.nil?
+      raise FireEagle::ArgumentError, "call #request_token and have user authorize the token first" if @request_token.nil?
       response = get(FireEagle::ACCESS_TOKEN_PATH, :token => @request_token)
       @access_token = create_token(response)
-    end
-
-    # Interactively proceed through the OAuth Request token exchange process. For use by web-based and desktop-based applications in debug mode only.
-    def get_access_token
-      raise FireEagle::ArgumentError, "OAuth Access Token Required" unless debug?
-
-      response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
-      
-      puts response.body
-      
-      request_token = create_token(response)
-      
-      puts request_token.inspect
-    
-      ## User interaction required
-    
-      puts "Authorize this: #{FireEagle::AUTHORIZATION_URL}?oauth_token=#{request_token.token}"
-      print "<waiting>"
-      $stdin.gets
-    
-      ## Back to our regularly scheduled access token retrieval
-    
-      response = get(FireEagle::ACCESS_TOKEN_PATH, :token => request_token)
-      puts response.body
-      @access_token = create_token(response)
-      puts "Access token: #{@access_token.inspect}"
     end
 
     # Disambiguates potential values for update query. Results from lookup can be passed to

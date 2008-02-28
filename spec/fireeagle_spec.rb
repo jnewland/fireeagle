@@ -53,13 +53,21 @@ describe "FireEagle" do
       @token = mock("token", :token => 'foo')
       client.stub!(:get).and_return('')
       client.stub!(:create_token).and_return(@token)
-      client.request_token_url.should =~ /\?oauth_token=foo/
+      client.get_request_token
+      client.authorization_url.should =~ /\?oauth_token=foo/
     end
 
-    it "should require #request_token_url be called before #convert_to_access_token" do
+    it "should require #get_access_token be called before #convert_to_access_token" do
       lambda do
         client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
         client.convert_to_access_token
+      end.should raise_error(FireEagle::ArgumentError)
+    end
+
+    it "should require #get_access_token be called before #authorization_url" do
+      lambda do
+        client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
+        client.authorization_url
       end.should raise_error(FireEagle::ArgumentError)
     end
 
@@ -68,7 +76,7 @@ describe "FireEagle" do
       @token = mock("token", :token => 'foo')
       client.stub!(:get).and_return('')
       client.stub!(:create_token).and_return(@token)
-      client.request_token_url
+      client.get_request_token
       client.convert_to_access_token
       client.access_token.should == @token
     end

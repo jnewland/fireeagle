@@ -21,9 +21,17 @@ describe "FireEagle" do
   describe "web app authentication scenario" do
 
     it "should initialize a OAuth::Token if given it's token and secret" do
-      @token = mock(OAuth::Token)
-      OAuth::Token.should_receive(:new).and_return(@token)
+      @access_token = mock(OAuth::Token)
+      OAuth::Token.stub!(:new).and_return(@access_token)
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      client.access_token.should == @access_token
+    end
+
+    it "should initialize a request token if given one" do
+      @request_token = mock(OAuth::Token)
+      OAuth::Token.stub!(:new).and_return(@request_token)
+      client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :request_token => 'toke', :request_token_secret => 'sekret')
+      client.request_token.should == @request_token
     end
   end
 

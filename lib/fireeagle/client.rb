@@ -1,6 +1,6 @@
 class FireEagle
   class Client
-    attr_reader :access_token, :consumer, :format
+    attr_reader :access_token, :request_token, :consumer, :format
 
     # Initialize a FireEagle Client. Takes an options Hash.
     #
@@ -11,6 +11,8 @@ class FireEagle
     #
     # == Optional keys:
     #
+    # [<tt>:request_token</tt>]           OAuth Request Token, for use with convert_to_access_token
+    # [<tt>:request_token_secret</tt>]    OAuth Request Token Secret, for use with convert_to_access_token
     # [<tt>:access_token</tt>]           OAuth Token, either User-specific or General-purpose
     # [<tt>:access_token_secret</tt>]    OAuth Token, either User-specific or General-purpose
     # [<tt>:app_id</tt>]                 Your Mobile Application ID
@@ -89,9 +91,14 @@ class FireEagle
       else
         @access_token = nil
       end
+      if options[:request_token] && options[:request_token_secret]
+        @request_token = OAuth::Token.new(options[:request_token], options[:request_token_secret])
+      else
+        @request_token = nil
+      end
     end
 
-    # Obtain an unauthorized OAuth Request token
+    # Obtain an <strong>new</strong> unauthorized OAuth Request token
     def request_token
       response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
       @request_token = create_token(response)
@@ -103,7 +110,7 @@ class FireEagle
       "#{FireEagle::MOBILE_AUTH_URL}#{@app_id}"
     end
 
-    # Obtain an unauthorized OAuth Request token and return the URL the user must access to authorize this token. For use by web-based and desktop-based applications.
+    # Obtain an <strong>new</strong> unauthorized OAuth Request token and return the URL the user must access to authorize this token. For use by web-based and desktop-based applications.
     def request_token_url
       @request_token = request_token
       "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"

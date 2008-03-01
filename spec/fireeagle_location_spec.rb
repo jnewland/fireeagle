@@ -30,6 +30,10 @@ describe "FireEagle Location" do
   it "should represent the location's timestamp" do
     @location.located_at.should == Time.parse("2008-01-22T14:23:11-08:00")
   end
+  
+  it "should use the name for #to_s" do
+    @location.to_s.should == @location.name
+  end
 
   describe "GeoRuby support" do
 

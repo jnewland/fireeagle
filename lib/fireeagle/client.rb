@@ -36,7 +36,7 @@ class FireEagle
     # take this responsibility on as your own. If your Application Oauth tokens are compromised, FireEagle will
     # turn off your application service until the problem is resolved.
     #
-    # If the Client is initialized without an OAuth access token., it's assumed you're operating a non-web based application.
+    # If the Client is initialized without an OAuth access token, it's assumed you're operating a non-web based application.
     #
     # == Non web-based applications
     #
@@ -137,7 +137,8 @@ class FireEagle
     # Location Hash keys, in order of priority:
     # 
     # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
-    # [<tt>:place_id</tt>]                Place ID - valid values decrypts to an integer value
+    # [<tt>(:woeid)</tt>]                 Where on Earth ID
+    # [<tt>:place_id</tt>]                Place ID (via Flickr/Upcomoing); deprecated in favor of WOE IDs when possible
     # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
     # [<tt>(:mnc, :mcc, :lac, :cid)</tt>]    cell tower information, all required (as integers) for a valid tower location
     # [<tt>:postal</tt>]                  a ZIP or postal code (combined with address, city, state, and country when available)
@@ -240,7 +241,8 @@ class FireEagle
     # Location Hash keys, in order of priority:
     # 
     # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
-    # [<tt>:place_id</tt>]                Place ID - valid values decrypts to an integer value
+    # [<tt>:woeid</tt>]                   Where on Earth ID
+    # [<tt>:place_id</tt>]                Place ID
     # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
     # [<tt>(:mnc, :mcc, :lac, :cid)</tt>]    cell tower information, all required (as integers) for a valid tower location
     # [<tt>:postal</tt>]                  a ZIP or postal code (combined with address, city, state, and country when available)

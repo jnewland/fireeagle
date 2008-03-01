@@ -22,10 +22,16 @@ class FireEagle
     def name
       @name ||= @doc.at("/location/name").innerText rescue nil
     end
+    alias_method :to_s, :name
 
     #Unique identifier for this place. Pro-tip: This is the same place_id used by Flickr.
     def place_id
       @place_id ||= @doc.at("/location/place-id").innerText rescue nil
+    end
+    
+    #Numeric unique identifier for this place.
+    def woeid
+      @woeid ||= @doc.at("/location/woeid").innerText rescue nil
     end
 
     #The Time at which the User last updated in this Location

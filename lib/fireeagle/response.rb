@@ -15,7 +15,7 @@ class FireEagle
 
     #An array of of User-specific tokens and their Location at all levels the Client can see and larger.
     def users
-      @users ||= @doc.search("/rsp/user").map do |user|
+      @users ||= @doc.search("/rsp//user").map do |user|
         FireEagle::User.new(user.to_s)
       end
     end

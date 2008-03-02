@@ -260,13 +260,14 @@ class FireEagle
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
       location = sanitize_location_hash(location)
+      params = { :count => count, :start => start }.merge(location)
 
-      response = get(FireEagle::WITHIN_API_PATH + ".#{format}", :params => location)
+      response = get(FireEagle::WITHIN_API_PATH + ".#{format}", :params => params)
 
       if json?
         JSON.parse(response.body)
       else
-        FireEagle::Response.new(response.body).locations
+        FireEagle::Response.new(response.body).users
       end
     end
 

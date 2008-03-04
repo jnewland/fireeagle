@@ -8,6 +8,10 @@ class FireEagle
       @doc = doc
     end
 
+    def label
+      @label ||= @doc.at("/location/label").innerText rescue nil
+    end
+
     #Level of granularity for this Location
     def level
       @level ||= @doc.at("/location/level").innerText.to_i rescue nil

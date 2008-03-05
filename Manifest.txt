@@ -1,3 +1,5 @@
+config/hoe.rb
+config/requirements.rb
 History.txt
 License.txt
 Manifest.txt
@@ -10,3 +12,10 @@ lib/fireeagle/response.rb
 lib/fireeagle/user.rb
 lib/fireeagle/version.rb
 setup.rb
+spec/fireeagle_location_spec.rb
+spec/fireeagle_response_spec.rb
+spec/fireeagle_spec.rb
+spec/spec.opts
+spec/spec_helper.rb
+tasks/environment.rake
+tasks/rspec.raks

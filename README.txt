@@ -42,6 +42,10 @@ Authorization is handled by OAuth. For more details about the OAuth
 authorization flow and how it differs based on your application type, please
 see http://fireeagle.yahoo.net/developer/documentation/authorizing
 
+== Contributing
+
+http://github.com/jnewland/fireeagle/tree/master. You know what to do.
+
 Rubyforge Project Page:: http://rubyforge.org/projects/fireeagle
 Author::    Jesse Newland (http://soylentfoo.jnewland.com) (jnewland@gmail.com[mailto:jnewland@gmail.com])
 Copyright:: Copyright (c) 2008 Jesse Newland. Portions[http://pastie.caboo.se/private/oevvkdzl0zrdkf8s7hetg] Copyright (c) 2008 Yahoo!

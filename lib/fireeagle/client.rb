@@ -157,11 +157,7 @@ class FireEagle
 
       response = get(FireEagle::LOOKUP_API_PATH + ".#{format}", :params => params)
 
-      if json?
-        JSON.parse(response.body)
-      else
-        FireEagle::Response.new(response.body).locations
-      end
+      FireEagle::Response.new(response.body).locations
     end
 
     # Sets a User's current Location using using a Place ID hash or a set of Location parameters. If the User
@@ -196,11 +192,7 @@ class FireEagle
 
       response = post(FireEagle::UPDATE_API_PATH + ".#{format}", :params => location)
 
-      if json?
-        JSON.parse(response.body)
-      else
-        FireEagle::Response.new(response.body)
-      end
+      FireEagle::Response.new(response.body)
     end
 
     # Returns the Location of a User.
@@ -209,11 +201,7 @@ class FireEagle
 
       response = get(FireEagle::USER_API_PATH + ".#{format}")
 
-      if json?
-        JSON.parse(response.body)
-      else
-        FireEagle::Response.new(response.body).users.first
-      end
+      FireEagle::Response.new(response.body).users.first
     end
     alias_method :location, :user
 
@@ -226,11 +214,7 @@ class FireEagle
 
       response = get(FireEagle::RECENT_API_PATH + ".#{format}", :params => params)
 
-      if json?
-        JSON.parse(response.body)
-      else
-        FireEagle::Response.new(response.body).users
-      end
+      FireEagle::Response.new(response.body).users
     end
 
     # Takes a Place ID or a Location and returns a list of users of your application who are within the bounding box of that Location.
@@ -261,11 +245,7 @@ class FireEagle
 
       response = get(FireEagle::WITHIN_API_PATH + ".#{format}", :params => params)
 
-      if json?
-        JSON.parse(response.body)
-      else
-        FireEagle::Response.new(response.body).users
-      end
+      FireEagle::Response.new(response.body).users
     end
 
   protected
@@ -283,10 +263,6 @@ class FireEagle
 
     def xml? #:nodoc:
       format == FireEagle::FORMAT_XML
-    end
-
-    def json? #:nodoc:
-      format == FireEagle::FORMAT_JSON
     end
 
     def create_token(response) #:nodoc:

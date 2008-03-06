@@ -4,7 +4,6 @@ require 'rubygems'
 gem 'oauth', ">= 0.2.1"
 require 'oauth/client/helper'
 require 'oauth/request_proxy/net_http'
-require 'json'
 require 'hpricot'
 require 'geo_ruby'
 
@@ -20,7 +19,6 @@ class FireEagle
   UPDATE_API_PATH    = "/api/0.1/update"
   RECENT_API_PATH    = "/api/0.1/recent"
   WITHIN_API_PATH    = "/api/0.1/within"
-  FORMAT_JSON        = "json"
   FORMAT_XML         = "xml"
   UPDATE_PARAMS      = :lat, :lon, :woeid, :place_id, :address, :mnc, :mcc, :lac, :cid, :postal, :city, :state, :country, :q, :label
                         # not yet supported

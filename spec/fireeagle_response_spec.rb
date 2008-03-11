@@ -13,7 +13,7 @@ describe "FireEagle Response" do
     end
 
     it "should have an array of users" do
-      @response.users.should have(1).item
+      @response.should have(1).users
     end
 
     it "should have each users' token" do
@@ -25,7 +25,7 @@ describe "FireEagle Response" do
     end
 
     it "should have users' locations" do
-      @response.users.first.locations.should have(4).items
+      @response.users.first.should have(4).locations
     end
 
   end
@@ -41,7 +41,7 @@ describe "FireEagle Response" do
     end
 
     it "should have an array of locations" do
-      @response.locations.should have(9).items
+      @response.should have(9).locations
     end
 
     it "should have each location's place_id" do

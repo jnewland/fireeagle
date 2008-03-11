@@ -120,7 +120,7 @@ describe "FireEagle" do
     end
 
     it "should return several locations" do
-      @client.user.locations.should have(4).items
+      @client.user.should have(4).locations
     end
 
   end

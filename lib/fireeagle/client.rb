@@ -136,16 +136,16 @@ class FireEagle
     # 
     # Location Hash keys, in order of priority:
     # 
-    # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
-    # [<tt>(:woeid)</tt>]                 Where on Earth ID
-    # [<tt>:place_id</tt>]                Place ID (via Flickr/Upcomoing); deprecated in favor of WOE IDs when possible
-    # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
-    # [<tt>(:mnc, :mcc, :lac, :cid)</tt>]    cell tower information, all required (as integers) for a valid tower location
-    # [<tt>:postal</tt>]                  a ZIP or postal code (combined with address, city, state, and country when available)
-    # [<tt>:city</tt>]                    city (combined with address, postal, state, and country when available)
-    # [<tt>:state</tt>]                   state (combined with address, postal, city, and country when available)
-    # [<tt>:country</tt>]                 country (combined with address, postal, city, and state when available)
-    # [<tt>:q</tt>]                       Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
+    # [<tt>(:lat, :lon)</tt>]                   both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
+    # [<tt>(:woeid)</tt>]                       Where on Earth ID
+    # [<tt>:place_id</tt>]                      Place ID (via Flickr/Upcomoing); deprecated in favor of WOE IDs when possible
+    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
+    # [<tt>(:mnc, :mcc, :lac, :cellid)</tt>]    cell tower information, all required (as integers) for a valid tower location
+    # [<tt>:postal</tt>]                        a ZIP or postal code (combined with address, city, state, and country when available)
+    # [<tt>:city</tt>]                          city (combined with address, postal, state, and country when available)
+    # [<tt>:state</tt>]                         state (combined with address, postal, city, and country when available)
+    # [<tt>:country</tt>]                       country (combined with address, postal, city, and state when available)
+    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
     #
     # Not yet supported:
     #
@@ -170,15 +170,15 @@ class FireEagle
     # 
     # Location Hash keys, in order of priority:
     # 
-    # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
-    # [<tt>:place_id</tt>]                Place ID - valid values decrypts to an integer value
-    # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
-    # [<tt>(:mnc, :mcc, :lac, :cid)</tt>]    cell tower information, all required (as integers) for a valid tower location
-    # [<tt>:postal</tt>]                  a ZIP or postal code (combined with address, city, state, and country when available)
-    # [<tt>:city</tt>]                    city (combined with address, postal, state, and country when available)
-    # [<tt>:state</tt>]                   state (combined with address, postal, city, and country when available)
-    # [<tt>:country</tt>]                 country (combined with address, postal, city, and state when available)
-    # [<tt>:q</tt>]                       Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
+    # [<tt>(:lat, :lon)</tt>]                   both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
+    # [<tt>:place_id</tt>]                      Place ID - valid values decrypts to an integer value
+    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
+    # [<tt>(:mnc, :mcc, :lac, :cellid)</tt>]    cell tower information, all required (as integers) for a valid tower location
+    # [<tt>:postal</tt>]                        a ZIP or postal code (combined with address, city, state, and country when available)
+    # [<tt>:city</tt>]                          city (combined with address, postal, state, and country when available)
+    # [<tt>:state</tt>]                         state (combined with address, postal, city, and country when available)
+    # [<tt>:country</tt>]                       country (combined with address, postal, city, and state when available)
+    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
     #
     # Not yet supported:
     #
@@ -221,16 +221,16 @@ class FireEagle
     #
     # Location Hash keys, in order of priority:
     # 
-    # [<tt>(:lat, :lon)</tt>]              both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
-    # [<tt>:woeid</tt>]                   Where on Earth ID
-    # [<tt>:place_id</tt>]                Place ID
-    # [<tt>:address</tt>]                 street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
-    # [<tt>(:mnc, :mcc, :lac, :cid)</tt>]    cell tower information, all required (as integers) for a valid tower location
-    # [<tt>:postal</tt>]                  a ZIP or postal code (combined with address, city, state, and country when available)
-    # [<tt>:city</tt>]                    city (combined with address, postal, state, and country when available)
-    # [<tt>:state</tt>]                   state (combined with address, postal, city, and country when available)
-    # [<tt>:country</tt>]                 country (combined with address, postal, city, and state when available)
-    # [<tt>:q</tt>]                       Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
+    # [<tt>(:lat, :lon)</tt>]                   both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
+    # [<tt>:woeid</tt>]                         Where on Earth ID
+    # [<tt>:place_id</tt>]                      Place ID
+    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
+    # [<tt>(:mnc, :mcc, :lac, :cellid)</tt>]    cell tower information, all required (as integers) for a valid tower location
+    # [<tt>:postal</tt>]                        a ZIP or postal code (combined with address, city, state, and country when available)
+    # [<tt>:city</tt>]                          city (combined with address, postal, state, and country when available)
+    # [<tt>:state</tt>]                         state (combined with address, postal, city, and country when available)
+    # [<tt>:country</tt>]                       country (combined with address, postal, city, and state when available)
+    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
     #
     # Not yet supported:
     #
@@ -257,7 +257,7 @@ class FireEagle
 
       location = location.reject { |key, value| !FireEagle::UPDATE_PARAMS.include?(key) }
       raise FireEagle::ArgumentError, "Requires all or none of :lat, :lon" unless location.has_all_or_none_keys?(:lat, :lon)
-      raise FireEagle::ArgumentError, "Requires all or none of :mnc, :mcc, :lac, :cellid" unless location.has_all_or_none_keys?(:mnc, :mcc, :lac, :cid)
+      raise FireEagle::ArgumentError, "Requires all or none of :mnc, :mcc, :lac, :cellid" unless location.has_all_or_none_keys?(:mnc, :mcc, :lac, :cellid)
       location
     end
 

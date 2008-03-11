@@ -20,7 +20,7 @@ class FireEagle
   RECENT_API_PATH    = "/api/0.1/recent"
   WITHIN_API_PATH    = "/api/0.1/within"
   FORMAT_XML         = "xml"
-  UPDATE_PARAMS      = :lat, :lon, :woeid, :place_id, :address, :mnc, :mcc, :lac, :cid, :postal, :city, :state, :country, :q, :label
+  UPDATE_PARAMS      = :lat, :lon, :woeid, :place_id, :address, :mnc, :mcc, :lac, :cellid, :postal, :city, :state, :country, :q, :label
                         # not yet supported
                         #,:geom, :upcoming_venue_id, :yahoo_local_id, :plazes_id
 

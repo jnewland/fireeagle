@@ -96,13 +96,13 @@ describe "FireEagle" do
       lambda { @client.update(:lat => 1, :lon => 2) }.should_not raise_error(FireEagle::ArgumentError)
     end
 
-    it "requires all or none of :mnc, :mcc, :lac, :cid" do
-      lambda { @client.update(:mcc => 123, :lac => "whatever", :cid => true) }.should raise_error(FireEagle::ArgumentError)
-      lambda { @client.update(:mcc => 123, :mnc => 123123, :lac => "whatever", :cid => true) }.should_not raise_error(FireEagle::ArgumentError)
+    it "requires all or none of :mnc, :mcc, :lac, :cellid" do
+      lambda { @client.update(:mcc => 123, :lac => "whatever", :cellid => true) }.should raise_error(FireEagle::ArgumentError)
+      lambda { @client.update(:mcc => 123, :mnc => 123123, :lac => "whatever", :cellid => true) }.should_not raise_error(FireEagle::ArgumentError)
     end
 
     it "should wrap the result" do
-      @client.update(:mcc => 123, :mnc => 123123, :lac => "whatever", :cid => true).users.first.token.should == "16w3z6ysudxt"
+      @client.update(:mcc => 123, :mnc => 123123, :lac => "whatever", :cellid => true).users.first.token.should == "16w3z6ysudxt"
     end
 
   end

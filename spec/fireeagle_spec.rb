@@ -38,7 +38,7 @@ describe "FireEagle" do
   describe "request token scenario" do
     it "shouldn't initialize with a access_token" do
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
-      client.access_token.should == nil
+      client.access_token.should be_nil
     end
 
     it "should require token exchange before calling any API methods" do
@@ -54,7 +54,7 @@ describe "FireEagle" do
       client.stub!(:get).and_return('')
       client.stub!(:create_token).and_return(@token)
       client.get_request_token
-      client.authorization_url.should =~ /\?oauth_token=foo/
+      client.authorization_url.should match(/\?oauth_token=foo/)
     end
 
     it "should require #get_request_token be called before #convert_to_access_token" do
@@ -120,11 +120,11 @@ describe "FireEagle" do
     end
 
     it "should return several locations" do
-      @client.user.locations.size.should == 4
+      @client.user.locations.should have(4).items
     end
 
   end
-  
+
   describe "lookup method" do
 
     before(:each) do
@@ -134,7 +134,7 @@ describe "FireEagle" do
     end
 
     it "should return an array of Locations" do
-      @client.lookup(:q => "30022").size.should == 9
+      @client.lookup(:q => "30022").should have(9).items
     end
 
     it "should return a place id for each" do

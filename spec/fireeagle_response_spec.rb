@@ -7,29 +7,29 @@ describe "FireEagle Response" do
     before(:each) do
       @response = FireEagle::Response.new(XML_LOCATION_RESPONSE)
     end
-    
+
     it "should indicate success" do
-      @response.success?.should == true
+      @response.should be_success
     end
 
     it "should have an array of users" do
-      @response.users.size.should == 1
+      @response.users.should have(1).item
     end
-    
+
     it "should have each users' token" do
       @response.users.first.token.should == "16w3z6ysudxt"
     end
-    
+
     it "should flag the best guess" do
       @response.users.first.best_guess.name.should == "Yolo County, California"
     end
-    
+
     it "should have users' locations" do
-      @response.users.first.locations.size.should == 4
+      @response.users.first.locations.should have(4).items
     end
 
   end
-  
+
   describe "location parsing" do
 
     before(:each) do
@@ -37,11 +37,11 @@ describe "FireEagle Response" do
     end
 
     it "should indicate success" do
-      @response.success?.should == true
+      @response.should be_success
     end
 
     it "should have an array of locations" do
-      @response.locations.size.should == 9
+      @response.locations.should have(9).items
     end
 
     it "should have each location's place_id" do

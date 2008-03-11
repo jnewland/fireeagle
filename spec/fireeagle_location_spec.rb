@@ -8,7 +8,7 @@ describe "FireEagle Location" do
   end
 
   it "should know if this is a best guess" do
-    @location.best_guess?.should == false
+    @location.should_not be_best_guess
   end
 
   it "should represent the level" do
@@ -30,7 +30,7 @@ describe "FireEagle Location" do
   it "should represent the location's timestamp" do
     @location.located_at.should == Time.parse("2008-01-22T14:23:11-08:00")
   end
-  
+
   it "should use the name for #to_s" do
     @location.to_s.should == @location.name
   end
@@ -40,19 +40,19 @@ describe "FireEagle Location" do
     it "should represent a bounding box as a GeoRuby Envelope" do
       location = Hpricot.XML(XML_LOCATION_CHUNK)
       @location = FireEagle::Location.new(location)
-      @location.geom.class.should == GeoRuby::SimpleFeatures::Envelope
+      @location.geom.should be_an_instance_of(GeoRuby::SimpleFeatures::Envelope)
     end
 
     it "should represent an exact point as a GeoRuby Point" do
       location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
       @location = FireEagle::Location.new(location)
-      @location.geom.class.should == GeoRuby::SimpleFeatures::Point
+      @location.geom.should be_an_instance_of(GeoRuby::SimpleFeatures::Point)
     end
 
     it "should be aliased as 'geo'" do
       location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
       @location = FireEagle::Location.new(location)
-      @location.geo.class.should == GeoRuby::SimpleFeatures::Point     
+      @location.geo.should be_an_instance_of(GeoRuby::SimpleFeatures::Point)
     end
 
   end

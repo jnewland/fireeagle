@@ -19,3 +19,14 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "spec/spec.opts"]
   t.spec_files = FileList['spec/*_spec.rb']
 end
+
+# Make spec the default task
+# from http://blog.subterfusion.net/2008/rake-hacks-overriding-tasks-quick-binary-run-intelligent-irb/
+Rake::TaskManager.class_eval do
+  def remove_task(task_name)
+    @tasks.delete(task_name.to_s)
+  end
+end
+
+Rake.application.remove_task :default
+task :default => :spec

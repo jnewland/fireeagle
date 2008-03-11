@@ -36,7 +36,7 @@ end
 
 #FireEagle additions to the <code>Hash</code> class
 class Hash
-  #Returns <code>true</code> if the ALL or NONE of the given keys are present in <i>hsh</i>.
+  #Returns <code>true</code> if the ALL or NONE of the given keys are present in <i>my_keys</i>.
   def has_all_or_none_keys?(*my_keys)
     size = my_keys.length
     false_count = 0

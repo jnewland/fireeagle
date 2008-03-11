@@ -24,7 +24,7 @@ describe "FireEagle Response" do
       @response.users.first.best_guess.name.should == "Yolo County, California"
     end
     
-    it "should have users' loactions" do
+    it "should have users' locations" do
       @response.users.first.locations.size.should == 4
     end
 

@@ -50,7 +50,7 @@ describe "FireEagle" do
 
     it "should generate a Request Token URL" do
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
-      @token = mock("token", :token => 'foo')
+      @token = stub("token", :token => 'foo')
       client.stub!(:get).and_return('')
       client.stub!(:create_token).and_return(@token)
       client.get_request_token
@@ -87,7 +87,7 @@ describe "FireEagle" do
 
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
-      @response = mock('response', :body => XML_SUCCESS_RESPONSE)
+      @response = stub('response', :body => XML_SUCCESS_RESPONSE)
       @client.stub!(:request).and_return(@response)
     end
 
@@ -111,7 +111,7 @@ describe "FireEagle" do
 
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
-      @response = mock('response', :body => XML_LOCATION_RESPONSE)
+      @response = stub('response', :body => XML_LOCATION_RESPONSE)
       @client.stub!(:request).and_return(@response)
     end
 
@@ -129,7 +129,7 @@ describe "FireEagle" do
 
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
-      @response = mock('response', :body => XML_LOOKUP_RESPONSE)
+      @response = stub('response', :body => XML_LOOKUP_RESPONSE)
       @client.stub!(:request).and_return(@response)
     end
 

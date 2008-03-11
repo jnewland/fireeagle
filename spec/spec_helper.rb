@@ -124,5 +124,132 @@ XML_LOOKUP_RESPONSE = <<-RESPONSE
 </rsp>
 RESPONSE
 
+XML_WITHIN_RESPONSE = <<-RESPONSE
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok">
+  <users>
+    <user token="MQdDrJgXMNJi">
+      <location-hierarchy>
+        <location best-guess="true">
+          <id>111541</id>
+          <georss:point>32.7093315125 -117.1650772095</georss:point>
+          <level>0</level>
+          <level-name>exact</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>333 W Harbor Dr, San Diego, CA</name>
+        </location>
+        <location best-guess="false">
+          <id>111551</id>
+          <georss:box>
+            32.6916618347 -117.2174377441 32.744140625 -117.1458892822
+          </georss:box>
+          <level>1</level>
+          <level-name>postal</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>San Diego, CA 92101</name>
+          <place-id>NpiXqwmYA5viX3K3Ew</place-id>
+          <woeid>12796255</woeid>
+        </location>
+        <location best-guess="false">
+          <id>111561</id>
+          <georss:box>
+            32.5349388123 -117.2884292603 33.1128082275 -116.9142913818
+          </georss:box>
+          <level>3</level>
+          <level-name>city</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>San Diego, CA</name>
+          <place-id>Nm4O.DebBZTYKUsu</place-id>
+          <woeid>2487889</woeid>
+        </location>
+        <location best-guess="false">
+          <id>111571</id>
+          <georss:box>
+            32.5342788696 -124.4150238037 42.0093803406 -114.1308135986
+          </georss:box>
+          <level>5</level>
+          <level-name>state</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>California</name>
+          <place-id>SVrAMtCbAphCLAtP</place-id>
+          <woeid>2347563</woeid>
+        </location>
+        <location best-guess="false">
+          <id>111581</id>
+          <georss:box>
+            18.9108390808 -167.2764129639 72.8960571289 -66.6879425049
+          </georss:box>
+          <level>6</level>
+          <level-name>country</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>United States</name>
+          <place-id>4KO02SibApitvSBieQ</place-id>
+          <woeid>23424977</woeid>
+        </location>
+      </location-hierarchy>
+    </user>
+    <user token="MQdDrJgXMNJi">
+      <location-hierarchy>
+        <location best-guess="true">
+          <id>111541</id>
+          <georss:point>32.7093315125 -117.1650772095</georss:point>
+          <level>0</level>
+          <level-name>exact</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>333 W Harbor Dr, San Diego, CA</name>
+        </location>
+        <location best-guess="false">
+          <id>111551</id>
+          <georss:box>
+            32.6916618347 -117.2174377441 32.744140625 -117.1458892822
+          </georss:box>
+          <level>1</level>
+          <level-name>postal</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>San Diego, CA 92101</name>
+          <place-id>NpiXqwmYA5viX3K3Ew</place-id>
+          <woeid>12796255</woeid>
+        </location>
+        <location best-guess="false">
+          <id>111561</id>
+          <georss:box>
+            32.5349388123 -117.2884292603 33.1128082275 -116.9142913818
+          </georss:box>
+          <level>3</level>
+          <level-name>city</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>San Diego, CA</name>
+          <place-id>Nm4O.DebBZTYKUsu</place-id>
+          <woeid>2487889</woeid>
+        </location>
+        <location best-guess="false">
+          <id>111571</id>
+          <georss:box>
+            32.5342788696 -124.4150238037 42.0093803406 -114.1308135986
+          </georss:box>
+          <level>5</level>
+          <level-name>state</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>California</name>
+          <place-id>SVrAMtCbAphCLAtP</place-id>
+          <woeid>2347563</woeid>
+        </location>
+        <location best-guess="false">
+          <id>111581</id>
+          <georss:box>
+            18.9108390808 -167.2764129639 72.8960571289 -66.6879425049
+          </georss:box>
+          <level>6</level>
+          <level-name>country</level-name>
+          <located-at>2008-03-03T09:05:16-08:00</located-at>
+          <name>United States</name>
+          <place-id>4KO02SibApitvSBieQ</place-id>
+          <woeid>23424977</woeid>
+        </location>
+      </location-hierarchy>
+    </user>
+  </users>
+</rsp>
+RESPONSE
 
 require File.dirname(__FILE__) + '/../lib/fireeagle'

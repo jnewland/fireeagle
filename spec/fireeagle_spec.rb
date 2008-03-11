@@ -147,4 +147,19 @@ describe "FireEagle" do
 
   end
 
+  describe "within method" do
+    before do
+      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      @response = stub('response', :body => XML_WITHIN_RESPONSE)
+      @client.stub!(:request).and_return(@response)
+    end
+
+    it "should return an array of Users" do
+      @client.within(:woe => "12796255").should have(2).users
+    end
+
+    it "should return an array of Locations for each" do
+      @client.within(:woe => "12796255").first.should have(5).locations
+    end
+  end
 end

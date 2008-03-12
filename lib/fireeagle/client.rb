@@ -76,7 +76,7 @@ class FireEagle
         :debug  => false,
         :format => FireEagle::FORMAT_XML
       }.merge(options)
-    
+
       # symbolize keys
       options.map do |k,v|
         options[k.to_sym] = v
@@ -133,19 +133,19 @@ class FireEagle
     #
     # There is a specific order for looking up locations. For example, if you provide lat, lon, and address,
     # FireEagle will use the the latitude and longitude geo-coordinates and ignore the address.
-    # 
+    #
     # Location Hash keys, in order of priority:
-    # 
+    #
     # [<tt>(:lat, :lon)</tt>]                   both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
     # [<tt>(:woeid)</tt>]                       Where on Earth ID
     # [<tt>:place_id</tt>]                      Place ID (via Flickr/Upcomoing); deprecated in favor of WOE IDs when possible
-    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
+    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available)
     # [<tt>(:mnc, :mcc, :lac, :cellid)</tt>]    cell tower information, all required (as integers) for a valid tower location
     # [<tt>:postal</tt>]                        a ZIP or postal code (combined with address, city, state, and country when available)
     # [<tt>:city</tt>]                          city (combined with address, postal, state, and country when available)
     # [<tt>:state</tt>]                         state (combined with address, postal, city, and country when available)
     # [<tt>:country</tt>]                       country (combined with address, postal, city, and state when available)
-    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
+    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is.
     #
     # Not yet supported:
     #
@@ -167,18 +167,18 @@ class FireEagle
     #
     # There is a specific order for looking up locations. For example, if you provide lat, lon, and address,
     # FireEagle will use the the latitude and longitude geo-coordinates and ignore the address.
-    # 
+    #
     # Location Hash keys, in order of priority:
-    # 
+    #
     # [<tt>(:lat, :lon)</tt>]                   both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
     # [<tt>:place_id</tt>]                      Place ID - valid values decrypts to an integer value
-    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
+    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available)
     # [<tt>(:mnc, :mcc, :lac, :cellid)</tt>]    cell tower information, all required (as integers) for a valid tower location
     # [<tt>:postal</tt>]                        a ZIP or postal code (combined with address, city, state, and country when available)
     # [<tt>:city</tt>]                          city (combined with address, postal, state, and country when available)
     # [<tt>:state</tt>]                         state (combined with address, postal, city, and country when available)
     # [<tt>:country</tt>]                       country (combined with address, postal, city, and state when available)
-    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
+    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is.
     #
     # Not yet supported:
     #
@@ -205,12 +205,18 @@ class FireEagle
     end
     alias_method :location, :user
 
-    # Query for Users of an Application who have updated their Location recently. Returns a list of 
+    # Query for Users of an Application who have updated their Location recently. Returns a list of
     # Users for the Application with recently updated locations.
-    def recent(count = 10, start = 0)
+    #
+    # == Optional parameters:
+    #
+    # <tt>count</tt>  Number of users to return per page. (default: 10)
+    # <tt>start</tt>  The page number at which to start returning the list of users. Pages are 0-indexed, each page contains the per_page number of users. (default: 0)
+    # <tt>time</tt>   The time to start looking at recent updates from. Value is flexible, supported forms are 'now', 'yesterday', '12:00', '13:00', '1:00pm' and '2008-03-12 12:34:56'. (default: 'now')
+    def recent(count = 10, start = 0, time = 'now')
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
 
-      params = { :count => count, :start => start }
+      params = { :count => count, :start => start, :time => time }
 
       response = get(FireEagle::RECENT_API_PATH + ".#{format}", :params => params)
 
@@ -220,17 +226,17 @@ class FireEagle
     # Takes a Place ID or a Location and returns a list of users of your application who are within the bounding box of that Location.
     #
     # Location Hash keys, in order of priority:
-    # 
+    #
     # [<tt>(:lat, :lon)</tt>]                   both required, valid values are floats of -180 to 180 for lat and -90 to 90 for lon
     # [<tt>:woeid</tt>]                         Where on Earth ID
     # [<tt>:place_id</tt>]                      Place ID
-    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available) 
+    # [<tt>:address</tt>]                       street address (may contain a full address, but will be combined with postal, city, state, and country when available)
     # [<tt>(:mnc, :mcc, :lac, :cellid)</tt>]    cell tower information, all required (as integers) for a valid tower location
     # [<tt>:postal</tt>]                        a ZIP or postal code (combined with address, city, state, and country when available)
     # [<tt>:city</tt>]                          city (combined with address, postal, state, and country when available)
     # [<tt>:state</tt>]                         state (combined with address, postal, city, and country when available)
     # [<tt>:country</tt>]                       country (combined with address, postal, city, and state when available)
-    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is. 
+    # [<tt>:q</tt>]                             Free-text fallback containing user input. Lat/lon pairs and geometries will be extracted if possible, otherwise this string will be geocoded as-is.
     #
     # Not yet supported:
     #

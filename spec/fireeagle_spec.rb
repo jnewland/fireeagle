@@ -162,4 +162,21 @@ describe "FireEagle" do
       @client.within(:woe => "12796255").first.should have(5).locations
     end
   end
+
+  describe "recent method" do
+    before do
+      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      @response = stub('response', :body => XML_RECENT_RESPONSE)
+      @client.stub!(:request).and_return(@response)
+    end
+
+    it "should return an array of Users" do
+      @client.recent(2, 1, 'yesterday').should have(2).users
+    end
+
+    it "should return an array of Locations for each" do
+      @client.recent(2, 1, 'yesterday').first.should have(5).locations
+    end
+  end
+
 end

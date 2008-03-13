@@ -82,17 +82,17 @@ class FireEagle
         options[k.to_sym] = v
       end
       raise FireEagle::ArgumentError, "OAuth Consumer Key and Secret required" if options[:consumer_key].nil? || options[:consumer_secret].nil?
-      @consumer = OAuth::Consumer.new(options[:consumer_key], options[:consumer_secret])
-      @debug = options[:debug]
-      @format = options[:format]
-      @app_id = options[:app_id]
+      @consumer = OAuth::Consumer.new(options[:consumer_key], options[:consumer_secret], :site => FireEagle::API_SERVER, :authorize_url => FireEagle::AUTHORIZATION_URL)
+      @debug    = options[:debug]
+      @format   = options[:format]
+      @app_id   = options[:app_id]
       if options[:access_token] && options[:access_token_secret]
-        @access_token = OAuth::Token.new(options[:access_token], options[:access_token_secret])
+        @access_token = OAuth::AccessToken.new(@consumer, options[:access_token], options[:access_token_secret])
       else
         @access_token = nil
       end
       if options[:request_token] && options[:request_token_secret]
-        @request_token = OAuth::Token.new(options[:request_token], options[:request_token_secret])
+        @request_token = OAuth::RequestToken.new(@consumer, options[:request_token], options[:request_token_secret])
       else
         @request_token = nil
       end
@@ -101,8 +101,7 @@ class FireEagle
     # Obtain an <strong>new</strong> unauthorized OAuth Request token
     def get_request_token(force_token_regeneration = false)
       if force_token_regeneration || @request_token.nil?
-        response = get(FireEagle::REQUEST_TOKEN_PATH, :token => nil)
-        @request_token = create_token(response)
+        @request_token = consumer.get_request_token
       end
       @request_token
     end
@@ -116,14 +115,13 @@ class FireEagle
     # The URL the user must access to authorize this token. request_token must be called first. For use by web-based and desktop-based applications.
     def authorization_url
       raise FireEagle::ArgumentError, "call #get_request_token first" if @request_token.nil?
-      "#{FireEagle::AUTHORIZATION_URL}?oauth_token=#{@request_token.token}"
+      request_token.authorize_url
     end
 
     #Exchange an authorized OAuth Request token for an access token. For use by desktop-based and mobile applications.
     def convert_to_access_token
       raise FireEagle::ArgumentError, "call #get_request_token and have user authorize the token first" if @request_token.nil?
-      response = get(FireEagle::ACCESS_TOKEN_PATH, :token => @request_token)
-      @access_token = create_token(response)
+      @access_token = request_token.get_access_token
     end
 
     # Disambiguates potential values for update query. Results from lookup can be passed to

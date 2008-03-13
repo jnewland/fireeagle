@@ -12,7 +12,7 @@ describe "FireEagle" do
 
     it "should initialize an OAuth::Consumer" do
       @consumer = mock(OAuth::Consumer)
-      OAuth::Consumer.should_receive(:new).and_return(@consumer)
+      OAuth::Consumer.should_receive(:new).with('key', 'sekret', :site => FireEagle::API_SERVER, :authorize_url => FireEagle::AUTHORIZATION_URL).and_return(@consumer)
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
     end
 
@@ -20,16 +20,16 @@ describe "FireEagle" do
 
   describe "web app authentication scenario" do
 
-    it "should initialize a OAuth::Token if given it's token and secret" do
-      @access_token = mock(OAuth::Token)
-      OAuth::Token.stub!(:new).and_return(@access_token)
+    it "should initialize an OAuth::AccessToken if given its token and secret" do
+      @access_token = mock(OAuth::AccessToken)
+      OAuth::AccessToken.stub!(:new).and_return(@access_token)
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       client.access_token.should == @access_token
     end
 
-    it "should initialize a request token if given one" do
-      @request_token = mock(OAuth::Token)
-      OAuth::Token.stub!(:new).and_return(@request_token)
+    it "should initialize an OAuth::RequestToken if given its token and secret" do
+      @request_token = mock(OAuth::RequestToken)
+      OAuth::RequestToken.stub!(:new).and_return(@request_token)
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :request_token => 'toke', :request_token_secret => 'sekret')
       client.request_token.should == @request_token
     end
@@ -49,12 +49,15 @@ describe "FireEagle" do
     end
 
     it "should generate a Request Token URL" do
+      consumer = mock(OAuth::Consumer)
+      token    = mock(OAuth::RequestToken)
+      consumer.should_receive(:get_request_token).and_return(token)
+      token.should_receive(:authorize_url)
+
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
-      @token = stub("token", :token => 'foo')
-      client.stub!(:get).and_return('')
-      client.stub!(:create_token).and_return(@token)
+      client.should_receive(:consumer).and_return(consumer)
       client.get_request_token
-      client.authorization_url.should match(/\?oauth_token=foo/)
+      client.authorization_url
     end
 
     it "should require #get_request_token be called before #convert_to_access_token" do
@@ -71,14 +74,19 @@ describe "FireEagle" do
       end.should raise_error(FireEagle::ArgumentError)
     end
 
-    it "should generate a Request Token URL" do
+    it "should generate an Access Token" do
+      consumer  = mock(OAuth::Consumer)
+      req_token = mock(OAuth::RequestToken)
+      acc_token = mock(OAuth::AccessToken)
+      consumer.should_receive(:get_request_token).and_return(req_token)
+      req_token.should_receive(:get_access_token).and_return(acc_token)
+
       client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret')
-      @token = mock("token", :token => 'foo')
-      client.stub!(:get).and_return('')
-      client.stub!(:create_token).and_return(@token)
+      client.should_receive(:consumer).and_return(consumer)
+
       client.get_request_token
       client.convert_to_access_token
-      client.access_token.should == @token
+      client.access_token.should == acc_token
     end
 
   end

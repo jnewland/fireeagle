@@ -1,3 +1,10 @@
+== 0.6.2
+
+* Offload heavy lifting to OAuth for tokens and signing requests
+* Add time parameter to Client#recent
+* Change lookup params from :cid to :cellid to follow Fire Eagle
+* Cleaned up specs
+
 == 0.6.1
 
 * Remove 'not implemented' message

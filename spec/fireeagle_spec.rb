@@ -96,7 +96,7 @@ describe "FireEagle" do
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       @response = stub('response', :body => XML_SUCCESS_RESPONSE)
-      @client.stub!(:post).and_return(@response)
+      @client.stub!(:request).and_return(@response)
     end
 
     it "requires all or none of :lat, :lon" do
@@ -120,7 +120,7 @@ describe "FireEagle" do
     before(:each) do
       @client   = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       response = stub('response', :body => XML_LOCATION_RESPONSE)
-      @client.stub!(:get).and_return(response)
+      @client.stub!(:request).and_return(response)
     end
 
     it "should return a best guess" do
@@ -138,7 +138,7 @@ describe "FireEagle" do
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       @response = stub('response', :body => XML_LOOKUP_RESPONSE)
-      @client.stub!(:get).and_return(@response)
+      @client.stub!(:request).and_return(@response)
     end
 
     it "should return an array of Locations" do
@@ -159,7 +159,7 @@ describe "FireEagle" do
     before do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       @response = stub('response', :body => XML_WITHIN_RESPONSE)
-      @client.stub!(:get).and_return(@response)
+      @client.stub!(:request).and_return(@response)
     end
 
     it "should return an array of Users" do
@@ -175,7 +175,7 @@ describe "FireEagle" do
     before do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       @response = stub('response', :body => XML_RECENT_RESPONSE)
-      @client.stub!(:get).and_return(@response)
+      @client.stub!(:request).and_return(@response)
     end
 
     it "should return an array of Users" do

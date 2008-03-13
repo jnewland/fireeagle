@@ -34,9 +34,9 @@ class FireEagle
   end
 end
 
-#FireEagle additions to the <code>Hash</code> class
+# FireEagle additions to the <code>Hash</code> class
 class Hash
-  #Returns <code>true</code> if the ALL or NONE of the given keys are present in <i>my_keys</i>.
+  # Returns <code>true</code> if the ALL or NONE of the given keys are present in <i>my_keys</i>.
   def has_all_or_none_keys?(*my_keys)
     size = my_keys.length
     false_count = 0
@@ -45,6 +45,18 @@ class Hash
     end
     false_count == 0 or false_count == size
   end
+end
+
+# FireEagle addition to the <code>OAuth::Consumer</code> class
+class OAuth::Consumer
+  alias_method :create_http_with_verify, :create_http
+  # Monkey patch to silence the SSL warnings
+  def create_http_without_verify #:nodoc:
+    http_object             = create_http_with_verify
+    http_object.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.scheme=="https"
+    http_object
+  end
+  alias_method :create_http, :create_http_without_verify
 end
 
 require File.dirname(__FILE__) + '/fireeagle/client'

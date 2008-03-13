@@ -191,9 +191,7 @@ class FireEagle
     # Returns the Location of a User.
     def user
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-
       response = get(FireEagle::USER_API_PATH + ".#{format}")
-
       FireEagle::Response.new(response.body).users.first
     end
     alias_method :location, :user
@@ -208,11 +206,8 @@ class FireEagle
     # <tt>time</tt>   The time to start looking at recent updates from. Value is flexible, supported forms are 'now', 'yesterday', '12:00', '13:00', '1:00pm' and '2008-03-12 12:34:56'. (default: 'now')
     def recent(count = 10, start = 0, time = 'now')
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-
       params = { :count => count, :start => start, :time => time }
-
       response = get(FireEagle::RECENT_API_PATH + ".#{format}", :params => params)
-
       FireEagle::Response.new(response.body).users
     end
 
@@ -238,12 +233,9 @@ class FireEagle
     # * <tt>plazes_id</tt>
     def within(location = {}, count = 10, start = 0)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-
       location = sanitize_location_hash(location)
       params = { :count => count, :start => start }.merge(location)
-
       response = get(FireEagle::WITHIN_API_PATH + ".#{format}", :params => params)
-
       FireEagle::Response.new(response.body).users
     end
 
@@ -260,57 +252,30 @@ class FireEagle
       location
     end
 
-    def xml? #:nodoc:
-      format == FireEagle::FORMAT_XML
-    end
-
-    def create_token(response) #:nodoc:
-      token = Hash[*response.body.split("&").map { |x| x.split("=") }.flatten]
-      OAuth::Token.new(token["oauth_token"], token["oauth_token_secret"])
-    end
-
-    # Is the Client in debug mode?
-    def debug?
-      @debug == true
-    end
-
     def get(url, options = {}) #:nodoc:
-      qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
-      access_token.request(:get, "#{url}?#{qs}")
+      request(:get, url, options)
     end
 
     def post(url, options = {}) #:nodoc:
-      access_token.request(:post, url, options[:params])
+      request(:post, url, options)
     end
 
     def request(method, url, options) #:nodoc:
-      options = {
-        :params => {},
-        :token  => @access_token
-      }.merge(options)
-
-      request_uri = URI.parse(FireEagle::API_SERVER + url)
-      http = Net::HTTP.new(request_uri.host, request_uri.port)
-      http.set_debug_output $stderr if debug?
-      if FireEagle::API_SERVER =~ /https:/
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-
-      request = nil
-      if method == :post
-        request = Net::HTTP::Post.new(request_uri.path)
-        request.set_form_data(options[:params])
-      elsif method == :get
+      response = case method
+      when :post
+        access_token.request(:post, url, options[:params])
+      when :get
         qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
-        request = Net::HTTP::Get.new(request_uri.path + "?" + qs)
+        access_token.request(:get, "#{url}?#{qs}")
+      else
+        raise ArgumentError, "method #{method} not supported"
       end
-      request.oauth!(http, consumer, options[:token])
-      response = http.request(request)
-      raise FireEagle::FireEagleException, "Internal Server Error" if response.code == '500'
-      raise FireEagle::FireEagleException, "Method Not Implemented Yet" if response.code == '400'
-      response
-    end
 
+      case response.code
+      when '500'; then raise FireEagle::FireEagleException, "Internal Server Error"
+      when '400'; then raise FireEagle::FireEagleException, "Method Not Implemented Yet"
+      else response
+      end
+    end
   end
 end

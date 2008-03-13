@@ -183,11 +183,8 @@ class FireEagle
     # * <tt>plazes_id</tt>
     def update(location = {})
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-
       location = sanitize_location_hash(location)
-
       response = post(FireEagle::UPDATE_API_PATH + ".#{format}", :params => location)
-
       FireEagle::Response.new(response.body)
     end
 
@@ -283,7 +280,7 @@ class FireEagle
     end
 
     def post(url, options = {}) #:nodoc:
-      request(:post, url, options)
+      access_token.request(:post, url, options[:params])
     end
 
     def request(method, url, options) #:nodoc:

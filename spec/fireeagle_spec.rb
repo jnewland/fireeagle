@@ -96,7 +96,7 @@ describe "FireEagle" do
     before(:each) do
       @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
       @response = stub('response', :body => XML_SUCCESS_RESPONSE)
-      @client.stub!(:request).and_return(@response)
+      @client.stub!(:post).and_return(@response)
     end
 
     it "requires all or none of :lat, :lon" do

@@ -152,9 +152,7 @@ class FireEagle
     # * <tt>plazes_id</tt>
     def lookup(params)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-
       response = get(FireEagle::LOOKUP_API_PATH + ".#{format}", :params => params)
-
       FireEagle::Response.new(response.body).locations
     end
 
@@ -280,7 +278,8 @@ class FireEagle
     end
 
     def get(url, options = {}) #:nodoc:
-      request(:get, url, options)
+      qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
+      access_token.request(:get, "#{url}?#{qs}")
     end
 
     def post(url, options = {}) #:nodoc:

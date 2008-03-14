@@ -271,8 +271,11 @@ class FireEagle
         raise ArgumentError, "method #{method} not supported"
       end
 
-      raise FireEagle::FireEagleException, "Internal Server Error" if response.code == '500'
-      response
+      case response.code
+      when '404'; then raise FireEagle::FireEagleException, "Not Found"
+      when '500'; then raise FireEagle::FireEagleException, "Internal Server Error"
+      else response
+      end
     end
   end
 end

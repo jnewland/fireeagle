@@ -134,11 +134,12 @@ describe "FireEagle" do
   end
 
   describe "lookup method" do
-
     before(:each) do
-      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
-      @response = stub('response', :body => XML_LOOKUP_RESPONSE)
-      @client.stub!(:request).and_return(@response)
+      @client       = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      response      = stub('response', :body => XML_LOOKUP_RESPONSE)
+      fail_response = stub('fail response', :body => XML_FAIL_LOOKUP_RESPONSE)
+      @client.stub!(:request).with(:get, FireEagle::LOOKUP_API_PATH, :params => {:q => "30022"}).and_return(response)
+      @client.stub!(:request).with(:get, FireEagle::LOOKUP_API_PATH, :params => {:mnc => 12, :mcc => 502, :lac => 2051, :cellid => 39091}).and_return(fail_response)
     end
 
     it "should return an array of Locations" do
@@ -153,6 +154,11 @@ describe "FireEagle" do
       @client.lookup(:q => "30022").first.name.should == "Alpharetta, GA 30022"
     end
 
+    it "should raise an exception if the lookup failed" do
+      lambda {
+        @client.lookup(:mnc => 12, :mcc => 502, :lac => 2051, :cellid => 39091)
+      }.should raise_error(FireEagle::FireEagleException, "Place can't be identified.")
+    end
   end
 
   describe "within method" do

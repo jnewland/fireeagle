@@ -124,6 +124,13 @@ XML_LOOKUP_RESPONSE = <<-RESPONSE
 </rsp>
 RESPONSE
 
+XML_FAIL_LOOKUP_RESPONSE = <<-RESPONSE
+<?xml version="1.0" encoding="utf-8"?>
+<rsp stat="fail">
+  <err msg="Place can't be identified." code="6"/>
+</rsp>
+RESPONSE
+
 XML_WITHIN_RESPONSE = <<-RESPONSE
 <?xml version="1.0" encoding="UTF-8"?>
 <rsp stat="ok">

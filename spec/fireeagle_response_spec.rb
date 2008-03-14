@@ -57,7 +57,7 @@ describe "FireEagle Response" do
   describe "error handling" do
 
     it "should raise an exception when returned xml with a status of fail" do
-      lambda { FireEagle::Response.new(XML_ERROR_RESPONSE) }.should raise_error(FireEagle::FireEagleException)
+      lambda { FireEagle::Response.new(XML_ERROR_RESPONSE) }.should raise_error(FireEagle::FireEagleException, "Something bad happened")
     end
 
   end

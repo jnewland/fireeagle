@@ -1,3 +1,7 @@
+== 0.6.3
+
+* Bugfix for Ruby 1.9
+
 == 0.6.2
 
 * Offload heavy lifting to OAuth for tokens and signing requests

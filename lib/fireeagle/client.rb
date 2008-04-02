@@ -265,7 +265,7 @@ class FireEagle
       when :post
         access_token.request(:post, url, options[:params])
       when :get
-        qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
+        qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&") if options[:params]
         access_token.request(:get, "#{url}?#{qs}")
       else
         raise ArgumentError, "method #{method} not supported"

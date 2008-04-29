@@ -1,4 +1,3 @@
-(in /Users/snf/Documents/Projects/fireeagle)
 Gem::Specification.new do |s|
   s.name = %q{fireeagle}
   s.version = "0.7.0.0"

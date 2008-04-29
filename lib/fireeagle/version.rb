@@ -1,9 +1,10 @@
 class FireEagle #:nodoc:
   module VERSION #:nodoc:
     MAJOR = 0
-    MINOR = 6
-    TINY  = 3
+    MINOR = 7
+    TINY  = 0
+    TEENY = 0
 
-    STRING = [MAJOR, MINOR, TINY].join('.')
+    STRING = [MAJOR, MINOR, TINY, TEENY].join('.')
   end
 end

@@ -1,3 +1,7 @@
+== 0.7.1.0
+
+* Fix OAuth Dependency Issue
+
 == 0.6.3
 
 * Bugfix for Ruby 1.9

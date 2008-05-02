@@ -1,7 +1,8 @@
 require 'time'
 require 'net/https'
 require 'rubygems'
-gem 'oauth', ">= 0.2.1"
+gem 'oauth', ">= 0.2.4"
+require 'oauth/helper'
 require 'oauth/client/helper'
 require 'oauth/request_proxy/net_http'
 require 'hpricot'

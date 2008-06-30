@@ -114,7 +114,7 @@ class FireEagle
       "#{FireEagle::MOBILE_AUTH_URL}#{@app_id}"
     end
 
-    # The URL the user must access to authorize this token. request_token must be called first. For use by web-based and desktop-based applications.
+    # The URL the user must access to authorize this token. get_request_token must be called first. For use by web-based and desktop-based applications.
     def authorization_url
       raise FireEagle::ArgumentError, "call #get_request_token first" if @request_token.nil?
       request_token.authorize_url

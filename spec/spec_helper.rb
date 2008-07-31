@@ -5,6 +5,7 @@ rescue LoadError
   gem 'rspec'
   require 'spec'
 end
+require 'time'
 
 XML_ERROR_RESPONSE = <<-RESPONSE
 <?xml version="1.0" encoding="utf-8"?>
@@ -254,104 +255,11 @@ RESPONSE
 
 XML_RECENT_RESPONSE = <<-RESPONSE
 <?xml version="1.0" encoding="UTF-8"?>
-<rsp stat="ok" xmlns:georss="http://www.georss.org/georss">
+<rsp xmlns:georss="http://www.georss.org/georss" stat="ok">
   <users>
-    <user token="MQdDrJgXMNJi">
-      <location-hierarchy>
-        <location best-guess="true">
-          <id>111541</id>
-          <georss:point>32.7093315125 -117.1650772095</georss:point>
-          <level>0</level>
-          <level-name>exact</level-name>
-          <located-at>2008-03-03T09:05:16-08:00</located-at>
-          <name>333 W Harbor Dr, San Diego, CA</name>
-        </location>
-        <location best-guess="false">
-          <id>111551</id>
-          <georss:box>32.6916618347 -117.2174377441 32.744140625 -117.1458892822</georss:box>
-          <level>1</level>
-          <level-name>postal</level-name>
-          <located-at>2008-03-03T09:05:16-08:00</located-at>
-          <name>San Diego, CA 92101</name>
-          <place-id>NpiXqwmYA5viX3K3Ew</place-id>
-          <woeid>12796255</woeid>
-        </location>
-        <location best-guess="false">
-          <id>111561</id>
-          <georss:box>32.5349388123 -117.2884292603 33.1128082275 -116.9142913818</georss:box>
-          <level>3</level>
-          <level-name>city</level-name>
-          <located-at>2008-03-03T09:05:16-08:00</located-at>
-          <name>San Diego, CA</name>
-          <place-id>Nm4O.DebBZTYKUsu</place-id>
-          <woeid>2487889</woeid>
-        </location>
-        <location best-guess="false">
-          <id>111571</id>
-          <georss:box>32.5342788696 -124.4150238037 42.0093803406 -114.1308135986</georss:box>
-          <level>5</level>
-          <level-name>state</level-name>
-          <located-at>2008-03-03T09:05:16-08:00</located-at>
-          <name>California</name>
-          <place-id>SVrAMtCbAphCLAtP</place-id>
-          <woeid>2347563</woeid>
-        </location>
-        <location best-guess="false">
-          <id>111581</id>
-          <georss:box>18.9108390808 -167.2764129639 72.8960571289 -66.6879425049</georss:box>
-          <level>6</level>
-          <level-name>country</level-name>
-          <located-at>2008-03-03T09:05:16-08:00</located-at>
-          <name>United States</name>
-          <place-id>4KO02SibApitvSBieQ</place-id>
-          <woeid>23424977</woeid>
-        </location>
-      </location-hierarchy>
-    </user>
-    <user token="XMoZaTjZJiOQ">
-      <location-hierarchy>
-        <location best-guess="true">
-          <id>113221</id>
-          <georss:box>32.8155899048 -96.8162918091 32.8511695862 -96.7717132568</georss:box>
-          <level>1</level>
-          <level-name>postal</level-name>
-          <located-at>2008-03-03T10:24:24-08:00</located-at>
-          <name>Dallas, TX 75205</name>
-          <place-id>1KTPxFCYA5vlcics6A</place-id>
-          <woeid>12790441</woeid>
-        </location>
-        <location best-guess="false">
-          <id>113231</id>
-          <georss:box>32.6209487915 -96.9988708496 33.0258712769 -96.4660263062</georss:box>
-          <level>3</level>
-          <level-name>city</level-name>
-          <located-at>2008-03-03T10:24:24-08:00</located-at>
-          <name>Dallas, TX</name>
-          <place-id>bgWooz.bApRFBRNK</place-id>
-          <woeid>2388929</woeid>
-        </location>
-        <location best-guess="false">
-          <id>113241</id>
-          <georss:box>25.8372898102 -106.645652771 36.5006904602 -93.5079269409</georss:box>
-          <level>5</level>
-          <level-name>state</level-name>
-          <located-at>2008-03-03T10:24:24-08:00</located-at>
-          <name>Texas</name>
-          <place-id>b1Yi6qubApjz6jWW</place-id>
-          <woeid>2347602</woeid>
-        </location>
-        <location best-guess="false">
-          <id>113251</id>
-          <georss:box>18.9108390808 -167.2764129639 72.8960571289 -66.6879425049</georss:box>
-          <level>6</level>
-          <level-name>country</level-name>
-          <located-at>2008-03-03T10:24:24-08:00</located-at>
-          <name>United States</name>
-          <place-id>4KO02SibApitvSBieQ</place-id>
-          <woeid>23424977</woeid>
-        </location>
-      </location-hierarchy>
-    </user>
+    <user located-at="2008-07-31T22:31:37+12:00" token="5pyl1xip0uh6"/>
+    <user located-at="2008-07-31T21:49:03+12:00" token="i71yc3myixg3"/>
+    <user located-at="2008-07-30T21:40:54+12:00" token="q1jm8nubnpsi"/>
   </users>
 </rsp>
 RESPONSE

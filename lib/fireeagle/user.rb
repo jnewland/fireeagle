@@ -1,6 +1,5 @@
 class FireEagle
   class User
-
     #Parses the XML response from FireEagle.
     def initialize(doc)
       doc = Hpricot(doc) unless doc.is_a?(Hpricot::Doc || Hpricot::Elem)
@@ -10,6 +9,11 @@ class FireEagle
     #The User-specific token for this Client.
     def token
       @token ||= @doc.at("/user").attributes["token"] rescue nil
+    end
+
+    #The time at which this user was last located
+    def located_at
+      @located_at ||= Time.parse(@doc.at("/user").attributes["located-at"]) rescue nil
     end
 
     #FireEagle's "best guess" form this User's Location. This best guess is derived as the most accurate

@@ -5,6 +5,8 @@ describe "FireEagle Location" do
   before(:each) do
     location = Hpricot.XML(XML_LOCATION_CHUNK)
     @location = FireEagle::Location.new(location)
+    location_with_query = Hpricot.XML(XML_QUERY_LOCATION_CHUNK)
+    @location_with_query = FireEagle::Location.new(location_with_query)
   end
 
   it "should know if this is a best guess" do
@@ -36,7 +38,7 @@ describe "FireEagle Location" do
   end
 
   it "should return the actual query string" do
-    @location.query == "333 W Harbor Dr, San Diego, CA"
+    @location_with_query.query.should == "333 W Harbor Dr, San Diego, CA"
   end
 
   describe "GeoRuby support" do

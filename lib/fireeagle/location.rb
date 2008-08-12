@@ -61,7 +61,7 @@ class FireEagle
     #
     # 333 W Harbor Dr, San Diego, CA
     def query
-      @query ||= CGI::unescape((@doc.at("/location/query").innerText).gsub('"', '').split('=')[1]) rescue nil
+      @query ||= CGI::unescape((@doc.at("/location/query").innerText).gsub('"', '').split('=')[1]).strip rescue nil
     end
 
     # The GeoRuby[http://georuby.rubyforge.org/] representation of this location

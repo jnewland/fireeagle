@@ -203,10 +203,10 @@ class FireEagle
     #
     # == Optional parameters:
     #
+    # <tt>time</tt>   The time to start looking at recent updates from. Value is flexible, supported forms are 'now', 'yesterday', '12:00', '13:00', '1:00pm' and '2008-03-12 12:34:56'. (default: 'now')
     # <tt>count</tt>  Number of users to return per page. (default: 10)
     # <tt>start</tt>  The page number at which to start returning the list of users. Pages are 0-indexed, each page contains the per_page number of users. (default: 0)
-    # <tt>time</tt>   The time to start looking at recent updates from. Value is flexible, supported forms are 'now', 'yesterday', '12:00', '13:00', '1:00pm' and '2008-03-12 12:34:56'. (default: 'now')
-    def recent(count = 10, start = 0, time = 'now')
+    def recent(time = 'now', count = 10, start = 1)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       params = { :count => count, :start => start, :time => time }
       response = get(FireEagle::RECENT_API_PATH + ".#{format}", :params => params)
@@ -233,7 +233,7 @@ class FireEagle
     # * <tt>upcoming_venue_id</tt>
     # * <tt>yahoo_local_id</tt>
     # * <tt>plazes_id</tt>
-    def within(location = {}, count = 10, start = 0)
+    def within(location = {}, count = 10, start = 1)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       location = sanitize_location_hash(location)
       params = { :count => count, :start => start }.merge(location)

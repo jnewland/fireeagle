@@ -35,6 +35,10 @@ describe "FireEagle Location" do
     @location.to_s.should == @location.name
   end
 
+  it "should return the actual query string" do
+    @location.query == "333 W Harbor Dr, San Diego, CA"
+  end
+
   describe "GeoRuby support" do
 
     it "should represent a bounding box as a GeoRuby Envelope" do

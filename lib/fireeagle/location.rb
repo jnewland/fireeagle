@@ -49,6 +49,21 @@ class FireEagle
       @lower_corner ||= @georss[0..1] rescue nil
     end
 
+    # The actual query that the user used so that it can be geocoded by the
+    # consumer since the Yahoo! geocoder is a little flaky, especially when it
+    # comes to intersections etc.
+    #
+    # Turns something like this:
+    #
+    # <query> "q=333%20W%20Harbor%20Dr,%20San%20Diego,%20CA" </query>
+    # 
+    # into
+    #
+    # 333 W Harbor Dr, San Diego, CA
+    def query
+      @query ||= CGI::unescape((@doc.at("/location/query").innerText).gsub('"', '').split('=')[1]) rescue nil
+    end
+
     # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
     def geom
       if @doc.at("/location//georss:box")

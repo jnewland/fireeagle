@@ -134,11 +134,12 @@ describe "FireEagle" do
   end
 
   describe "lookup method" do
-
     before(:each) do
-      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
-      @response = stub('response', :body => XML_LOOKUP_RESPONSE)
-      @client.stub!(:request).and_return(@response)
+      @client       = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      response      = stub('response', :body => XML_LOOKUP_RESPONSE)
+      fail_response = stub('fail response', :body => XML_FAIL_LOOKUP_RESPONSE)
+      @client.stub!(:request).with(:get, FireEagle::LOOKUP_API_PATH, :params => {:q => "30022"}).and_return(response)
+      @client.stub!(:request).with(:get, FireEagle::LOOKUP_API_PATH, :params => {:mnc => 12, :mcc => 502, :lac => 2051, :cellid => 39091}).and_return(fail_response)
     end
 
     it "should return an array of Locations" do
@@ -153,6 +154,11 @@ describe "FireEagle" do
       @client.lookup(:q => "30022").first.name.should == "Alpharetta, GA 30022"
     end
 
+    it "should raise an exception if the lookup failed" do
+      lambda {
+        @client.lookup(:mnc => 12, :mcc => 502, :lac => 2051, :cellid => 39091)
+      }.should raise_error(FireEagle::FireEagleException, "Place can't be identified.")
+    end
   end
 
   describe "within method" do
@@ -187,4 +193,37 @@ describe "FireEagle" do
     end
   end
 
+  describe "making a request" do
+    before do
+      @client = FireEagle::Client.new(:consumer_key => 'key', :consumer_secret => 'sekret', :access_token => 'toke', :access_token_secret => 'sekret')
+      @access_token = stub('access token')
+      @client.stub!(:access_token).and_return(@access_token)
+    end
+
+    it "should not raise any exception when response is OK" do
+      response = stub('response', :code => '200', :body => XML_RECENT_RESPONSE)
+      @access_token.stub!(:request).and_return(response)
+      lambda { @client.recent }.should_not raise_error
+    end
+
+    it "should raise an exception when requesting to a resource that doesn't exist (404)" do
+      response = stub('response', :code => '404', :body => '')
+      @access_token.stub!(:request).and_return(response)
+      lambda { @client.recent }.should raise_error(FireEagle::FireEagleException, 'Not Found')
+    end
+
+    it "should raise an exception when requesting to a resource that hit an internal server error (500)" do
+      response = stub('response', :code => '500', :body => '')
+      @access_token.stub!(:request).and_return(response)
+      lambda { @client.recent }.should raise_error(FireEagle::FireEagleException, 'Internal Server Error')
+    end
+
+    it "should raise an exception when response is apart from 200, 404 and 500" do
+      %w{401 403 405}.each do |code|
+        response = stub('response', :code => code, :body => XML_ERROR_RESPONSE)
+        @access_token.stub!(:request).and_return(response)
+        lambda { @client.recent }.should raise_error(FireEagle::FireEagleException, 'Something bad happened')
+      end
+    end
+  end
 end

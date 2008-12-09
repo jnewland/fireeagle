@@ -154,7 +154,7 @@ class FireEagle
     # * <tt>plazes_id</tt>
     def lookup(params)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-      response = get(FireEagle::LOOKUP_API_PATH + ".#{format}", :params => params)
+      response = get(FireEagle::LOOKUP_API_PATH, :params => params)
       FireEagle::Response.new(response.body).locations
     end
 
@@ -186,14 +186,14 @@ class FireEagle
     def update(location = {})
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       location = sanitize_location_hash(location)
-      response = post(FireEagle::UPDATE_API_PATH + ".#{format}", :params => location)
+      response = post(FireEagle::UPDATE_API_PATH, :params => location)
       FireEagle::Response.new(response.body)
     end
 
     # Returns the Location of a User.
     def user
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
-      response = get(FireEagle::USER_API_PATH + ".#{format}")
+      response = get(FireEagle::USER_API_PATH)
       FireEagle::Response.new(response.body).users.first
     end
     alias_method :location, :user
@@ -209,7 +209,7 @@ class FireEagle
     def recent(time = 'now', count = 10, start = 1)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       params = { :count => count, :start => start, :time => time }
-      response = get(FireEagle::RECENT_API_PATH + ".#{format}", :params => params)
+      response = get(FireEagle::RECENT_API_PATH, :params => params)
       FireEagle::Response.new(response.body).users
     end
 
@@ -237,7 +237,7 @@ class FireEagle
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       location = sanitize_location_hash(location)
       params = { :count => count, :start => start }.merge(location)
-      response = get(FireEagle::WITHIN_API_PATH + ".#{format}", :params => params)
+      response = get(FireEagle::WITHIN_API_PATH, :params => params)
       FireEagle::Response.new(response.body).users
     end
 
@@ -265,17 +265,17 @@ class FireEagle
     def request(method, url, options) #:nodoc:
       response = case method
       when :post
-        access_token.request(:post, url, options[:params])
+        access_token.request(:post, "#{url}.#{format}", options[:params])
       when :get
         qs = options[:params].collect { |k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&") if options[:params]
-        access_token.request(:get, "#{url}?#{qs}")
+        access_token.request(:get, "#{url}.#{format}?#{qs}")
       else
         raise ArgumentError, "method #{method} not supported"
       end
 
       case response.code
+      when '404'; then raise FireEagle::FireEagleException, "Not Found"
       when '500'; then raise FireEagle::FireEagleException, "Internal Server Error"
-      when '400'; then raise FireEagle::FireEagleException, "Method Not Implemented Yet"
       else response
       end
     end

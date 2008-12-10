@@ -155,7 +155,7 @@ module FireEagle
     def lookup(params)
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       response = get(FireEagle::LOOKUP_API_PATH, :params => params)
-      FireEagle::Response.new(response.body).locations
+      FireEagle::Response.parse(response.body).locations
     end
 
     # Sets a User's current Location using using a Place ID hash or a set of Location parameters. If the User
@@ -187,14 +187,14 @@ module FireEagle
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       location = sanitize_location_hash(location)
       response = post(FireEagle::UPDATE_API_PATH, :params => location)
-      FireEagle::Response.new(response.body)
+      FireEagle::Response.parse(response.body)
     end
 
     # Returns the Location of a User.
     def user
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       response = get(FireEagle::USER_API_PATH)
-      FireEagle::Response.new(response.body).users.first
+      FireEagle::Response.parse(response.body).users.first
     end
     alias_method :location, :user
 
@@ -210,7 +210,7 @@ module FireEagle
       raise FireEagle::ArgumentError, "OAuth Access Token Required" unless @access_token
       params = { :count => count, :start => start, :time => time }
       response = get(FireEagle::RECENT_API_PATH, :params => params)
-      FireEagle::Response.new(response.body).users
+      FireEagle::Response.parse(response.body).users
     end
 
     # Takes a Place ID or a Location and returns a list of users of your application who are within the bounding box of that Location.
@@ -238,7 +238,7 @@ module FireEagle
       location = sanitize_location_hash(location)
       params = { :count => count, :start => start }.merge(location)
       response = get(FireEagle::WITHIN_API_PATH, :params => params)
-      FireEagle::Response.new(response.body).users
+      FireEagle::Response.parse(response.body).users
     end
 
   protected

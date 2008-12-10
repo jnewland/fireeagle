@@ -5,7 +5,6 @@ gem 'oauth', ">= 0.2.4"
 require 'oauth/helper'
 require 'oauth/client/helper'
 require 'oauth/request_proxy/net_http'
-require 'hpricot'
 require 'geo_ruby'
 require 'happymapper'
 

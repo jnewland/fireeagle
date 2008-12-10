@@ -3,10 +3,8 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 describe "FireEagle Location" do
 
   before(:each) do
-    location = Hpricot.XML(XML_LOCATION_CHUNK)
-    @location = FireEagle::Location.new(location)
-    location_with_query = Hpricot.XML(XML_QUERY_LOCATION_CHUNK)
-    @location_with_query = FireEagle::Location.new(location_with_query)
+    @location = FireEagle::Location.parse(XML_LOCATION_CHUNK)
+    @location_with_query = FireEagle::Location.parse(XML_QUERY_LOCATION_CHUNK)
   end
 
   it "should know if this is a best guess" do

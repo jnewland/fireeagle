@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp xmlns:georss="http://www.georss.org/georss" stat="ok">
+  <users>
+    <user located-at="2008-07-31T22:31:37+12:00" token="5pyl1xip0uh6"/>
+    <user located-at="2008-07-31T21:49:03+12:00" token="i71yc3myixg3"/>
+  </users>
+</rsp>

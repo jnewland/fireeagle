@@ -10,7 +10,7 @@ module FireEagle
     has_many  :users, User
 
     def self.parse(xml, opts = {})
-      rsp = super(xml, opts.merge(:single => true))
+      rsp = super(xml, { :single => true }.merge(opts))
 
       raise FireEagleException, rsp.error.message if rsp.fail?
 

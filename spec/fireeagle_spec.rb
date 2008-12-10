@@ -171,10 +171,6 @@ describe "FireEagle" do
     it "should return an array of Users" do
       @client.within(:woe => "12796255").should have(2).users
     end
-
-    it "should return an array of Locations for each" do
-      @client.within(:woe => "12796255").first.should have(5).locations
-    end
   end
 
   describe "recent method" do

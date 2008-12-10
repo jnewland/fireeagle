@@ -2,7 +2,7 @@ module FireEagle
   class User
     include HappyMapper
 
-    tag "/rsp/user"
+    tag "/rsp//user"
     attribute :located_at, Time, :tag => "located-at"
     attribute :readable, Boolean
     attribute :token, String
@@ -14,7 +14,7 @@ module FireEagle
     end
 
     def locations
-      location_hierarchy.locations
+      location_hierarchy && location_hierarchy.locations
     end
   end
 end

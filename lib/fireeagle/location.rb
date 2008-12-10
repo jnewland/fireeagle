@@ -3,7 +3,7 @@ module FireEagle
   class Location
     include HappyMapper
 
-    tag "/rsp//location"
+    tag "//location"
     attribute :best_guess, Boolean, :tag => "best-guess"
     element :label, String
     element :level, Integer
@@ -19,8 +19,16 @@ module FireEagle
     # element :_box, String,      :tag => "georss:box"
     # element :_point, String,    :tag => "georss:point"
 
+    def self.parse(xml, opts = {})
+      super(xml, { :single => true }.merge(opts))
+    end
+
     def best_guess?
       best_guess == true
+    end
+
+    def to_s
+      name
     end
 
     # 

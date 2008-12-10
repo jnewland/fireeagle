@@ -1,31 +1,33 @@
 module FireEagle
   class Response
+    include HappyMapper
 
-    #Parses the XML response from FireEagle
-    def initialize(doc)
-      doc = Hpricot(doc) unless doc.is_a?(Hpricot::Doc || Hpricot::Elem)
-      @doc = doc
-      raise FireEagle::FireEagleException, @doc.at("/rsp/err").attributes["msg"] if !success? 
+    tag "/rsp"
+    attribute :status,  String, :tag => "stat"
+    element   :querystring, String
+    has_one   :error, Error
+    has_one   :locations, Locations
+    has_many  :users, User
+
+    def self.parse(xml, opts = {})
+      rsp = super(xml, opts.merge(:single => true))
+
+      raise FireEagleException, rsp.error.message if rsp.fail?
+
+      rsp
     end
 
-    #does the response indicate success?
+    def fail?
+      status == "fail"
+    end
+
+    # does the response indicate success?
     def success?
-      @doc.at("/rsp").attributes["stat"] == "ok" rescue false
+      status == "ok"
     end
 
-    #An array of of User-specific tokens and their Location at all levels the Client can see and larger.
-    def users
-      @users ||= @doc.search("/rsp//user").map do |user|
-        FireEagle::User.new(user.to_s)
-      end
+    def user
+      users[0]
     end
-
-    #A Location array.
-    def locations
-      @locations ||= @doc.search("/rsp/locations/location").map do |location|
-        FireEagle::Location.new(location.to_s)
-      end
-    end
-
   end
 end

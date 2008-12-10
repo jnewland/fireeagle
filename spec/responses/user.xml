@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rsp stat="ok" xmlns:georss="http://www.georss.org/georss">
+  <user token="16w3z6ysudxt" located-at="2008-12-09T17:14:50-08:00" readable="true" writable="true">
+    <location-hierarchy timezone="America/Los_Angeles">
+      <location best-guess="false">
+        <georss:box>38.5351715088 -121.7948684692 38.575668335 -121.6747894287</georss:box>
+        <label>Home of UC Davis</label>
+        <level>3</level>
+        <level-name>city</level-name>
+        <located-at>2008-01-22T14:23:11-08:00</located-at>
+        <name>Davis, CA</name>
+        <place-id>u4L9ZOObApTdx1q3</place-id>
+      </location>
+      <location best-guess="true">
+        <georss:box>38.3131217957 -122.4230804443 38.9261016846 -121.5012969971</georss:box>
+        <level>4</level>
+        <level-name>region</level-name>
+        <located-at>2008-01-22T18:45:26-08:00</located-at>
+        <name>Yolo County, California</name>
+        <place-id>YUYMh9CbBJ61mgFe</place-id>
+      </location>
+      <location best-guess="false">
+        <georss:box>32.5342788696 -124.4150238037 42.0093803406 -114.1308135986</georss:box>
+        <level>5</level>
+        <level-name>state</level-name>
+        <located-at>2008-01-22T18:45:26-08:00</located-at>
+        <name>California</name>
+        <place-id>SVrAMtCbAphCLAtP</place-id>
+      </location>
+      <location best-guess="false">
+        <georss:box>18.9108390808 -167.2764129639 72.8960571289 -66.6879425049</georss:box>
+        <level>6</level>
+        <level-name>country</level-name>
+        <located-at>2008-01-22T18:45:26-08:00</located-at>
+        <name>United States</name>
+        <place-id>4KO02SibApitvSBieQ</place-id>
+      </location>
+    </location-hierarchy>
+  </user>
+</rsp>

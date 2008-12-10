@@ -7,6 +7,15 @@ require 'oauth/client/helper'
 require 'oauth/request_proxy/net_http'
 require 'hpricot'
 require 'geo_ruby'
+require 'happymapper'
+
+require File.dirname(__FILE__) + '/fireeagle/client'
+require File.dirname(__FILE__) + '/fireeagle/location'
+require File.dirname(__FILE__) + '/fireeagle/locations'
+require File.dirname(__FILE__) + '/fireeagle/location_hierarchy'
+require File.dirname(__FILE__) + '/fireeagle/user'
+require File.dirname(__FILE__) + '/fireeagle/error'
+require File.dirname(__FILE__) + '/fireeagle/response'
 
 module FireEagle
   API_SERVER = "https://fireeagle.yahooapis.com"
@@ -25,13 +34,10 @@ module FireEagle
                         # not yet supported
                         #,:geom, :upcoming_venue_id, :yahoo_local_id, :plazes_id
 
-  class Error < RuntimeError #:nodoc:
+  class ArgumentError < StandardError #:nodoc:
   end
 
-  class ArgumentError < Error #:nodoc:
-  end
-
-  class FireEagleException < Error #:nodoc:
+  class FireEagleException < StandardError #:nodoc:
   end
 end
 
@@ -59,8 +65,3 @@ class OAuth::Consumer
   end
   alias_method :create_http, :create_http_without_verify
 end
-
-require File.dirname(__FILE__) + '/fireeagle/client'
-require File.dirname(__FILE__) + '/fireeagle/location'
-require File.dirname(__FILE__) + '/fireeagle/user'
-require File.dirname(__FILE__) + '/fireeagle/response'

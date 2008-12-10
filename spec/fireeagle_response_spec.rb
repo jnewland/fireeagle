@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe "FireEagle Response" do
+describe "Fire Eagle Response" do
 
   describe "user / location parsing" do
 
     before(:each) do
-      @response = FireEagle::Response.new(XML_LOCATION_RESPONSE)
+      @response = FireEagle::Response.parse(XML_LOCATION_RESPONSE)
     end
 
     it "should indicate success" do
@@ -33,7 +33,7 @@ describe "FireEagle Response" do
   describe "location parsing" do
 
     before(:each) do
-      @response = FireEagle::Response.new(XML_LOOKUP_RESPONSE)
+      @response = FireEagle::Response.parse(XML_LOOKUP_RESPONSE)
     end
 
     it "should indicate success" do
@@ -57,7 +57,7 @@ describe "FireEagle Response" do
   describe "error handling" do
 
     it "should raise an exception when returned xml with a status of fail" do
-      lambda { FireEagle::Response.new(XML_ERROR_RESPONSE) }.should raise_error(FireEagle::FireEagleException, "Something bad happened")
+      lambda { FireEagle::Response.parse(XML_ERROR_RESPONSE) }.should raise_error(FireEagle::FireEagleException, "Something bad happened")
     end
 
   end

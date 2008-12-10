@@ -1,4 +1,4 @@
-class FireEagle
+module FireEagle
   class Client
     # TODO add access_token=() and request_token=() methods that check whether the tokens are usable
     

@@ -1,4 +1,4 @@
-class FireEagle #:nodoc:
+module FireEagle #:nodoc:
   module VERSION #:nodoc:
     MAJOR = 0
     MINOR = 8

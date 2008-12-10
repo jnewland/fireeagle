@@ -1,4 +1,4 @@
-class FireEagle
+module FireEagle
   class User
     #Parses the XML response from FireEagle.
     def initialize(doc)

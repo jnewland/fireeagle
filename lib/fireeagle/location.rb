@@ -1,5 +1,5 @@
 #Describes a location
-class FireEagle
+module FireEagle
   class Location
 
     #Initialize a Location from an XML response

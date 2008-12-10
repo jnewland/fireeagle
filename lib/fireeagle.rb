@@ -8,7 +8,7 @@ require 'oauth/request_proxy/net_http'
 require 'hpricot'
 require 'geo_ruby'
 
-class FireEagle
+module FireEagle
   API_SERVER = "https://fireeagle.yahooapis.com"
   AUTH_SERVER = "https://fireeagle.yahoo.net"
   REQUEST_TOKEN_PATH = "/oauth/request_token"

@@ -1,4 +1,4 @@
-class FireEagle
+module FireEagle
   class Response
 
     #Parses the XML response from FireEagle

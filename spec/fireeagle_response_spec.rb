@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe "Fire Eagle Response" do
+describe FireEagle::Response do
 
   describe "user / location parsing" do
 

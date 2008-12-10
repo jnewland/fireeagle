@@ -7,6 +7,16 @@ rescue LoadError
 end
 require 'time'
 
+module ResponseHelper
+  def responses(key)
+    File.read(File.join(File.dirname(__FILE__), "responses", "#{key}.xml"))
+  end
+end
+
+Spec::Runner.configure do |config|
+  include ResponseHelper
+end
+
 XML_ERROR_RESPONSE = File.read(File.join(File.dirname(__FILE__), "responses", "error.xml"))
 XML_LOCATION_RESPONSE = File.read(File.join(File.dirname(__FILE__), "responses", "user.xml"))
 

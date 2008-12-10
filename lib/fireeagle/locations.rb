@@ -3,11 +3,21 @@ module FireEagle
     include Enumerable
     include HappyMapper
 
-    tag "/rsp/locations"
+    tag "//locations"
     attribute :count, Integer
     attribute :start, Integer
     attribute :total, Integer
-    has_many  :locations, Location
+    has_many  :locations, Location, :single => false
+
+    def self.parse(xml, opts = {})
+      super(xml, { :single => true }.merge(opts))
+    end
+
+    def [](*args)
+      locations[*args]
+    end
+
+    alias_method :slice, :[]
 
     def each(&block)
       locations.each(&block)
@@ -15,6 +25,10 @@ module FireEagle
 
     def first
       locations.first
+    end
+
+    def last
+      locations.last
     end
 
     def length

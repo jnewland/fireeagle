@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe "FireEagle Location" do
+describe FireEagle::Location do
 
   before(:each) do
     @location = FireEagle::Location.parse(XML_LOCATION_CHUNK)

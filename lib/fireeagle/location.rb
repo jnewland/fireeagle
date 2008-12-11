@@ -16,8 +16,10 @@ module FireEagle
     element :woeid, Integer
 
     # TODO these break lookup requests
-    element :_box, String,      :tag => "box",   :namespace => "georss"
-    element :_point, String,    :tag => "point", :namespace => "georss"
+    element :_box, GeoRuby::SimpleFeatures::Geometry,   :tag => "box",
+      :namespace => "georss", :parser => :from_georss, :parse_node => true
+    element :_point, GeoRuby::SimpleFeatures::Geometry, :tag => "point",
+      :namespace => "georss", :parser => :from_georss, :parse_node => true
 
     def self.parse(xml, opts = {})
       super(xml, { :single => true }.merge(opts))
@@ -54,13 +56,7 @@ module FireEagle
 
     # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
     def geom
-      if _box
-        @geom ||= GeoRuby::SimpleFeatures::Geometry.from_georss(_box)
-      elsif _point
-        @geom ||= GeoRuby::SimpleFeatures::Geometry.from_georss(_point)
-      else
-        return nil
-      end
+      _point || _box
     end
 
     alias_method :geo, :geom

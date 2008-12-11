@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 describe FireEagle::Location do
 
   before(:each) do
-    @location = FireEagle::Location.parse(XML_LOCATION_CHUNK)
-    @location_with_query = FireEagle::Location.parse(XML_QUERY_LOCATION_CHUNK)
+    @location = FireEagle::Location.parse(responses(:location_chunk))
+    @location_with_query = FireEagle::Location.parse(responses(:location_chunk_with_query))
   end
 
   it "should know if this is a best guess" do
@@ -36,29 +36,24 @@ describe FireEagle::Location do
   end
 
   it "should return the actual query string" do
+    pending("unclear what this should actually look like; perhaps a Hash?")
     @location_with_query.query.should == "333 W Harbor Dr, San Diego, CA"
   end
 
   describe "GeoRuby support" do
-
     it "should represent a bounding box as a GeoRuby Envelope" do
-      location = Hpricot.XML(XML_LOCATION_CHUNK)
-      @location = FireEagle::Location.new(location)
+      @location = FireEagle::Location.parse(responses(:location_chunk))
       @location.geom.should be_an_instance_of(GeoRuby::SimpleFeatures::Envelope)
     end
 
     it "should represent an exact point as a GeoRuby Point" do
-      location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
-      @location = FireEagle::Location.new(location)
+      @location = FireEagle::Location.parse(responses(:exact_location_chunk))
       @location.geom.should be_an_instance_of(GeoRuby::SimpleFeatures::Point)
     end
 
     it "should be aliased as 'geo'" do
-      location = Hpricot.XML(XML_EXACT_LOCATION_CHUNK)
-      @location = FireEagle::Location.new(location)
+      @location = FireEagle::Location.parse(responses(:exact_location_chunk))
       @location.geo.should be_an_instance_of(GeoRuby::SimpleFeatures::Point)
     end
-
   end
-
 end

@@ -3,7 +3,7 @@ module FireEagle
   class Location
     include HappyMapper
 
-    tag "//location"
+    tag "location"
     attribute :best_guess, Boolean, :tag => "best-guess"
     element :label, String
     element :level, Integer
@@ -16,8 +16,8 @@ module FireEagle
     element :woeid, Integer
 
     # TODO these break lookup requests
-    # element :_box, String,      :tag => "georss:box"
-    # element :_point, String,    :tag => "georss:point"
+    element :_box, String,      :tag => "box",   :namespace => "georss"
+    element :_point, String,    :tag => "point", :namespace => "georss"
 
     def self.parse(xml, opts = {})
       super(xml, { :single => true }.merge(opts))
@@ -51,17 +51,18 @@ module FireEagle
     # def query
     #   @query ||= CGI::unescape((@doc.at("/location/query").innerText).gsub('"', '').split('=')[1]).strip rescue nil
     # end
-    # 
-    # # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
-    # def geom
-    #   if @doc.at("/location//georss:box")
-    #     @geo ||= GeoRuby::SimpleFeatures::Geometry.from_georss(@doc.at("/location//georss:box").to_s)
-    #   elsif @doc.at("/location//georss:point")
-    #     @geo ||= GeoRuby::SimpleFeatures::Geometry.from_georss(@doc.at("/location//georss:point").to_s)
-    #   else
-    #     return nil
-    #   end
-    # end
-    # alias_method :geo, :geom
+
+    # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
+    def geom
+      if _box
+        @geom ||= GeoRuby::SimpleFeatures::Geometry.from_georss(_box)
+      elsif _point
+        @geom ||= GeoRuby::SimpleFeatures::Geometry.from_georss(_point)
+      else
+        return nil
+      end
+    end
+
+    alias_method :geo, :geom
   end
 end

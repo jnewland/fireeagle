@@ -3,7 +3,7 @@ module FireEagle
     include Enumerable
     include HappyMapper
 
-    tag "//locations"
+    tag "locations"
     attribute :count, Integer
     attribute :start, Integer
     attribute :total, Integer

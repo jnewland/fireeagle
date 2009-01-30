@@ -2,7 +2,7 @@ module FireEagle
   class Response
     include HappyMapper
 
-    tag "/rsp"
+    tag "rsp"
     attribute :status,  String, :tag => "stat"
     element   :querystring, String
     has_one   :error, Error
@@ -10,7 +10,7 @@ module FireEagle
     has_many  :users, User
 
     def self.parse(xml, opts = {})
-      rsp = super(xml, { :single => true }.merge(opts))
+      rsp = super(xml, opts)
 
       raise FireEagleException, rsp.error.message if rsp.fail?
 

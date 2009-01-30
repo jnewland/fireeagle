@@ -9,10 +9,6 @@ module FireEagle
     attribute :total, Integer
     has_many  :locations, Location, :single => false
 
-    def self.parse(xml, opts = {})
-      super(xml, { :single => true }.merge(opts))
-    end
-
     def [](*args)
       locations[*args]
     end

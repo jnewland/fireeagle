@@ -2,7 +2,7 @@ module FireEagle
   class Error
     include HappyMapper
 
-    tag "/rsp/err"
+    tag "err"
     attribute :code, String
     attribute :message, String, :tag => "msg"
   end

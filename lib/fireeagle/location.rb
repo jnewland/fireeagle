@@ -15,15 +15,10 @@ module FireEagle
     element :query, String
     element :woeid, Integer
 
-    # TODO these break lookup requests
     element :_box, GeoRuby::SimpleFeatures::Geometry,   :tag => "box",
-      :namespace => "georss", :parser => :from_georss, :parse_node => true
+      :namespace => "georss", :parser => :from_georss, :raw => true
     element :_point, GeoRuby::SimpleFeatures::Geometry, :tag => "point",
-      :namespace => "georss", :parser => :from_georss, :parse_node => true
-
-    def self.parse(xml, opts = {})
-      super(xml, { :single => true }.merge(opts))
-    end
+      :namespace => "georss", :parser => :from_georss, :raw => true
 
     def best_guess?
       best_guess == true
@@ -32,27 +27,6 @@ module FireEagle
     def to_s
       name
     end
-
-    # #The coordinates of the lower corner of a bounding box surrounding this Location
-    # def lower_corner
-    #   @georss ||= @doc.at("/location//georss:box").innerText.split.map{ |l| l.to_f } rescue nil
-    #   @lower_corner ||= @georss[0..1] rescue nil
-    # end
-    # 
-    # # The actual query that the user used so that it can be geocoded by the
-    # # consumer since the Yahoo! geocoder is a little flaky, especially when it
-    # # comes to intersections etc.
-    # #
-    # # Turns something like this:
-    # #
-    # # <query> "q=333%20W%20Harbor%20Dr,%20San%20Diego,%20CA" </query>
-    # # 
-    # # into
-    # #
-    # # 333 W Harbor Dr, San Diego, CA
-    # def query
-    #   @query ||= CGI::unescape((@doc.at("/location/query").innerText).gsub('"', '').split('=')[1]).strip rescue nil
-    # end
 
     # The GeoRuby[http://georuby.rubyforge.org/] representation of this location
     def geom

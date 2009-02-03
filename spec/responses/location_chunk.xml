@@ -4,5 +4,8 @@
   <level-name>city</level-name>
   <located-at>2008-01-22T14:23:11-08:00</located-at>
   <name>Davis, CA</name>
-  <place-id>u4L9ZOObApTdx1q3</place-id>
+  <normal-name>Davis</normal-name>
+  <woeid exact-match="true">2389646</woeid>
+  <place-id exact-match="true">u4L9ZOObApTdx1q3</place-id>
+  <label>Home of UC Davis</label>
 </location>

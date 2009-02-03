@@ -5,5 +5,5 @@
   <level-name>exact</level-name>
   <located-at>2008-03-03T09:05:16-08:00</located-at>
   <name>333 W Harbor Dr, San Diego, CA</name>
-  <query> "q=333%20W%20Harbor%20Dr,%20San%20Diego,%20CA" </query>
+  <query>q=333%20W%20Harbor%20Dr,%20San%20Diego,%20CA</query>
 </location>

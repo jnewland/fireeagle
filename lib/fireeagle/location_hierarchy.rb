@@ -3,7 +3,8 @@ module FireEagle
     include HappyMapper
 
     tag "location-hierarchy"
-    attribute :timezone, String
+    attribute :string,    String
+    attribute :timezone,  String
     has_many  :locations, Location
   end
 end

@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.1.1}
   s.summary = %q{Ruby wrapper for Yahoo!'s FireEagle}
 
+  s.add_dependency(%q<happymapper>, [">= 0.2.1"])
   s.add_dependency(%q<oauth>, [">= 0.2.4"])
-  s.add_dependency(%q<hpricot>, [">= 0.6"])
   s.add_dependency(%q<GeoRuby>, [">= 1.3.2"])
 end

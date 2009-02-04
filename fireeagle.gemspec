@@ -1,6 +1,3 @@
-(in /Users/snf/Documents/Projects/fireeagle)
-# -*- encoding: utf-8 -*-
-
 Gem::Specification.new do |s|
   s.name = %q{fireeagle}
   s.version = "0.8.0.1"

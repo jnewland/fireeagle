@@ -1,7 +1,7 @@
 module FireEagle
   class Client
     # TODO add access_token=() and request_token=() methods that check whether the tokens are usable
-    
+
     attr_reader :access_token, :request_token, :consumer, :format
 
     # Initialize a FireEagle Client. Takes an options Hash.
@@ -100,7 +100,7 @@ module FireEagle
       end
     end
 
-    # Obtain an <strong>new</strong> unauthorized OAuth Request token
+    # Obtain a <strong>new</strong> unauthorized OAuth Request token
     def get_request_token(force_token_regeneration = false)
       if force_token_regeneration || @request_token.nil?
         @request_token = consumer.get_request_token

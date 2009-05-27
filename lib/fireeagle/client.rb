@@ -20,35 +20,71 @@ module FireEagle
     # [<tt>:app_id</tt>]                 Your Mobile Application ID
     # [<tt>:debug</tt>]                  Boolean
     #
-    # User-specific OAuth tokens tie FireEagle users to your application. As such, they are intended to be
-    # distributed (with keys) to that user's mobile device and/or computer running your desktop or mobile client.
-    # For web-based applications User-specific tokens will be retrieved by your web server where they should be
-    # treated as private data. Take care to avoid releasing this data to the public, as the corresponding User's location
-    # information may be inadvertently exposed. User-specific OAuth tokens should be considered the property of
-    # your users.
+    # User-specific OAuth tokens tie Fire Eagle users to your application. As
+    # such, they are intended to be distributed (with keys) to that user's
+    # mobile device and/or computer running your desktop or mobile client. For
+    # web-based applications User-specific tokens will be retrieved by your
+    # web server where they should be treated as private data. Take care to
+    # avoid releasing this data to the public, as the corresponding User's
+    # location information may be inadvertently exposed. User-specific OAuth
+    # tokens should be considered the property of your users.
     #
-    # General-purpose OAuth tokens are tied to your application and allow you, as a developer, to make more
-    # general (often batch-style) queries against FireEagle. As a result, allowing this token/secret combination
-    # loose has the potential to reveal a much greater amount of personal data. In an attempt to mitigate this, we will
-    # only grant general-purpose tokens to web applications (contact us with details, if you seek an exception). In
-    # addition, we require developers to provide a restrictive IP range at registration time in order to further mitigate
-    # the risk of general-purpose tokens being used inappropriately.
+    # General-purpose OAuth tokens are tied to your application and allow you,
+    # as a developer, to make more general (often batch-style) queries against
+    # Fire Eagle. As a result, allowing this token/secret combination loose
+    # has the potential to reveal a much greater amount of personal data. In
+    # an attempt to mitigate this, we will only grant general-purpose tokens
+    # to web applications (contact us with details, if you seek an exception).
+    # In addition, we require developers to provide a restrictive IP range at
+    # registration time in order to further mitigate the risk of
+    # general-purpose tokens being used inappropriately.
     #
-    # In general, OAuth tokens should be considered sacrosanct in order to help us respect our users' privacy. Please
-    # take this responsibility on as your own. If your Application Oauth tokens are compromised, FireEagle will
-    # turn off your application service until the problem is resolved.
+    # In general, OAuth tokens should be considered sacrosanct in order to
+    # help us respect our users' privacy. Please take this responsibility on
+    # as your own. If your Application Oauth tokens are compromised, Fire
+    # Eagle will turn off your application service until the problem is
+    # resolved.
     #
-    # If the Client is initialized without an OAuth access token, it's assumed you're operating a non-web based application.
+    # If the Client is initialized without an OAuth access token, it's assumed
+    # you're operating a non-web based application.
+    #
+    # == Example web-based authentication flow:
+    #
+    # Initialize a client with your consumer key and consumer secret.
+    #
+    #   >> c = FireEagle::Client.new(:consumer_key => "key", :consumer_secret => "sekret")
+    #   => #<FireEagle::Client:0x1ce2e70 ... >
+    #
+    # Generate a request token with a +callback_url+:
+    #
+    #   >> c.get_request_token("http://example.com/cb")
+    #   => #<OAuth::Token:0x1cdb5bc @token="request_token", @secret="sekret">
+    #
+    # Prompt your user to visit your app's authorization url:
+    #
+    #   >> c.authorization_url
+    #   => "http://fireeagle.yahoo.net/oauth/authorize?oauth_token=request_token"
+    #
+    # When the user has completed this step, s/he will be redirected back to
+    # the callback url you configured when obtaining a request token.
+    # +oauth_verifier+ will be present in the callback.
+    #
+    #   >> c.convert_to_access_token(oauth_verifier)
+    #   => #<OAuth::Token:0x1cd3bf0 @token="access_token", @secret="access_token_secret">
     #
     # == Non web-based applications
     #
-    # For non web-based applications, such as a mobile client application, the authentication between the user and
-    # the application is slightly different. The request token is displayed to the user by the client application. The
-    # user then logs into the FireEagle website (using mobile_authorization_url) and enters this code to authorize the application.
-    # When the user finishes the authorization step the client application exchanges the request token for an access token
-    # (using convert_to_access_token). This is a lightweight method for non-web application users to authenticate an application
-    # without entering any identifying information into a potentially insecure application. Request tokens are valid for only
-    # 1 hour after being issued.
+    # For non web-based applications, such as a mobile client application, the
+    # authentication between the user and the application is slightly
+    # different. The request token is displayed to the user by the client
+    # application. The user then logs into the FireEagle website (using
+    # mobile_authorization_url) and enters this code to authorize the
+    # application. When the user finishes the authorization step the client
+    # application exchanges the request token for an access token (using
+    # +convert_to_access_token+). This is a lightweight method for non-web
+    # application users to authenticate an application without entering any
+    # identifying information into a potentially insecure application. Request
+    # tokens are valid for only 1 hour after being issued.
     #
     # == Example mobile-based authentication flow:
     #
@@ -67,9 +103,10 @@ module FireEagle
     #   >> c.mobile_authorization_url
     #   => "http://fireeagle.yahoo.net/oauth/mobile_auth/12345"
     #
-    # Once the user has indicated to you that they've done this, convert their request token to an access token:
+    # Once the user has indicated to you that they've done this (and provided
+    # a verification code), convert their request token to an access token:
     #
-    #   >> c.convert_to_access_token
+    #   >> c.convert_to_access_token(oauth_verifier)
     #   => #<OAuth::Token:0x1cd3bf0 @token="access_token", @secret="access_token_secret">
     #
     # You're done!
@@ -101,9 +138,9 @@ module FireEagle
     end
 
     # Obtain a <strong>new</strong> unauthorized OAuth Request token
-    def get_request_token(force_token_regeneration = false)
+    def get_request_token(callback_url = "", force_token_regeneration = false)
       if force_token_regeneration || @request_token.nil?
-        @request_token = consumer.get_request_token
+        @request_token = consumer.get_request_token(:oauth_callback => callback_url)
       end
       @request_token
     end
@@ -120,10 +157,10 @@ module FireEagle
       request_token.authorize_url
     end
 
-    #Exchange an authorized OAuth Request token for an access token. For use by desktop-based and mobile applications.
-    def convert_to_access_token
-      raise FireEagle::ArgumentError, "call #get_request_token and have user authorize the token first" if @request_token.nil?
-      @access_token = request_token.get_access_token
+    # Exchange an authorized OAuth Request token for an access token. For use by desktop-based and mobile applications.
+    def convert_to_access_token(oauth_verifier)
+      raise FireEagle::ArgumentError, "call #get_request_token and have the user authorize the token first" if @request_token.nil?
+      @access_token = request_token.get_access_token(:oauth_verifier => oauth_verifier)
     end
 
     # Disambiguates potential values for update query. Results from lookup can be passed to
